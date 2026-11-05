@@ -12,6 +12,7 @@ function M.setup(colors, config)
   local keyword_style = styles.keywords or { bold = true }
   local function_style = styles.functions or {}
   local variable_style = styles.variables or {}
+  local parameter_style = styles.parameters or { italic = true }
   local string_style = styles.strings or {}
   local constant_style = styles.constants or { bold = true }
   local type_style = styles.types or {}
@@ -152,7 +153,7 @@ function M.setup(colors, config)
 
     ["@variable"] = vim.tbl_extend("force", { fg = colors.fg }, variable_style),
     ["@variable.builtin"] = { fg = colors.cyan, italic = true },
-    ["@variable.parameter"] = { fg = colors.fg_dark, italic = true },
+    ["@variable.parameter"] = vim.tbl_extend("force", { fg = colors.fg_dark }, parameter_style),
     ["@variable.member"] = { fg = colors.fg },
     ["@property"] = { fg = colors.fg_dark },
     ["@field"] = { fg = colors.fg_dark },

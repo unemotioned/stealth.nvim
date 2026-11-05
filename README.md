@@ -103,6 +103,7 @@ require("stealth").setup({
     keywords = { bold = true, italic = false },
     functions = { bold = false, italic = false },
     variables = { italic = false },
+    parameters = { italic = true },
     strings = { italic = false },
     constants = { bold = true },
     types = { bold = false },

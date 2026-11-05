@@ -5,6 +5,7 @@ local M = {}
 ---@field keywords table<string, boolean>
 ---@field functions table<string, boolean>
 ---@field variables table<string, boolean>
+---@field parameters table<string, boolean>
 ---@field strings table<string, boolean>
 ---@field constants table<string, boolean>
 ---@field types table<string, boolean>
@@ -32,6 +33,7 @@ M.defaults = {
     keywords = { italic = false, bold = true },
     functions = { italic = false, bold = false },
     variables = { italic = false },
+    parameters = { italic = true },
     strings = { italic = false },
     constants = { bold = true },
     types = { bold = false },
