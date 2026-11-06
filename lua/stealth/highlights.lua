@@ -57,7 +57,7 @@ function M.setup(colors, config)
         Substitute = { fg = colors.bg, bg = colors.red, bold = true },
         LineNr = { fg = colors.fg_gutter },
         CursorLineNr = { fg = colors.fg, bold = true },
-        MatchParen = { fg = colors.main, bg = colors.bg_visual, bold = true, underline = true },
+        MatchParen = { fg = colors.orange, bg = colors.bg_visual, bold = true },
         ModeMsg = { fg = colors.fg, bold = true },
         MsgArea = { fg = colors.fg },
         MoreMsg = { fg = colors.cyan },
@@ -215,9 +215,10 @@ function M.setup(colors, config)
         DiagnosticVirtualTextInfo = { fg = colors.diag_info, bg = '#152329' },
         DiagnosticVirtualTextHint = { fg = colors.diag_hint, bg = '#152922' },
 
-        LspReferenceText = { bg = colors.bg_visual },
-        LspReferenceRead = { bg = colors.bg_visual },
-        LspReferenceWrite = { bg = colors.bg_visual, underline = true },
+        LspReferenceText = { fg = colors.amber, bg = colors.bg_visual },
+        LspReferenceRead = { fg = colors.amber, bg = colors.bg_visual },
+        LspReferenceWrite = { fg = colors.amber, bg = colors.bg_visual },
+        LspReferenceTarget = { fg = colors.amber, bg = colors.bg_visual },
         LspCodeLens = { fg = colors.fg_sub },
         LspSignatureActiveParameter = { fg = colors.accent, bold = true, underline = true },
 
