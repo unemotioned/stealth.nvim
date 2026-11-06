@@ -156,7 +156,7 @@ function M.setup(colors, config)
         ['@method'] = vim.tbl_extend('force', { fg = colors.green }, function_style),
 
         ['@variable'] = vim.tbl_extend('force', { fg = colors.fg }, variable_style),
-        ['@variable.builtin'] = { fg = colors.cyan, italic = true },
+        ['@variable.builtin'] = vim.tbl_extend('force', { fg = colors.cyan }, variable_style),
         ['@variable.parameter'] = vim.tbl_extend('force', { fg = colors.fg_dark }, parameter_style),
         ['@variable.member'] = { fg = colors.fg },
         ['@property'] = { fg = colors.fg_dark },
