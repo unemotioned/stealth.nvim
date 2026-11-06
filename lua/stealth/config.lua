@@ -24,45 +24,45 @@ local M = {}
 
 ---@type StealthConfig
 M.defaults = {
-  variant = "stealth", -- "stealth" (default), "monochrome", "emerald", "cyan", "violet", "amber"
-  transparent = false,
-  dim_inactive = false,
-  terminal_colors = true,
-  styles = {
-    comments = { italic = true },
-    keywords = { italic = false, bold = true },
-    functions = { italic = false, bold = false },
-    variables = { italic = false },
-    parameters = { italic = true },
-    strings = { italic = false },
-    constants = { bold = true },
-    types = { bold = false },
-    sidebars = "dark", -- "dark", "transparent", or "normal"
-    floats = "dark",   -- "dark", "transparent", or "normal"
-  },
-  plugins = {
-    telescope = true,
-    nvimtree = true,
-    neotree = true,
-    whichkey = true,
-    gitsigns = true,
-    cmp = true,
-    blink = true,
-    treesitter = true,
-    lsp = true,
-    semantic_tokens = true,
-    lualine = true,
-    bufferline = true,
-    barbar = true,
-    indent_blankline = true,
-    mini = true,
-    trouble = true,
-    dashboard = true,
-    noice = true,
-    notify = true,
-  },
-  on_colors = function(colors) end,
-  on_highlights = function(highlights, colors) end,
+    variant = 'stealth', -- "stealth" (default), "monochrome", "emerald", "cyan", "violet", "amber"
+    transparent = false,
+    dim_inactive = false,
+    terminal_colors = true,
+    styles = {
+        comments = { italic = true },
+        keywords = { italic = false, bold = true },
+        functions = { italic = false, bold = false },
+        variables = { italic = false },
+        parameters = { italic = true },
+        strings = { italic = false },
+        constants = { bold = true },
+        types = { bold = false },
+        sidebars = 'dark', -- "dark", "transparent", or "normal"
+        floats = 'dark', -- "dark", "transparent", or "normal"
+    },
+    plugins = {
+        telescope = true,
+        nvimtree = true,
+        neotree = true,
+        whichkey = true,
+        gitsigns = true,
+        cmp = true,
+        blink = true,
+        treesitter = true,
+        lsp = true,
+        semantic_tokens = true,
+        lualine = true,
+        bufferline = true,
+        barbar = true,
+        indent_blankline = true,
+        mini = true,
+        trouble = true,
+        dashboard = true,
+        noice = true,
+        notify = true,
+    },
+    on_colors = function(colors) end,
+    on_highlights = function(highlights, colors) end,
 }
 
 ---@type StealthConfig
@@ -71,7 +71,7 @@ M.options = {}
 ---Setup user configuration
 ---@param options StealthConfig|nil
 function M.setup(options)
-  M.options = vim.tbl_deep_extend("force", {}, M.defaults, options or {})
+    M.options = vim.tbl_deep_extend('force', {}, M.defaults, options or {})
 end
 
 return M

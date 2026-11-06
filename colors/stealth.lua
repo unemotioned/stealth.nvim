@@ -1,1 +1,1 @@
-require("stealth").load()
+require('stealth').load()
