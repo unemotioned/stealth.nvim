@@ -215,10 +215,11 @@ function M.setup(colors, config)
         DiagnosticVirtualTextInfo = { fg = colors.diag_info, bg = '#152329' },
         DiagnosticVirtualTextHint = { fg = colors.diag_hint, bg = '#152922' },
 
-        LspReferenceText = { fg = colors.amber, bg = colors.bg_visual },
-        LspReferenceRead = { fg = colors.amber, bg = colors.bg_visual },
-        LspReferenceWrite = { fg = colors.amber, bg = colors.bg_visual },
-        LspReferenceTarget = { fg = colors.amber, bg = colors.bg_visual },
+        -- Preserve syntax foregrounds when highlighting the symbol under the cursor.
+        LspReferenceText = { bg = colors.bg_visual },
+        LspReferenceRead = { bg = colors.bg_visual },
+        LspReferenceWrite = { bg = colors.bg_visual },
+        LspReferenceTarget = { bg = colors.bg_visual },
         LspCodeLens = { fg = colors.fg_sub },
         LspSignatureActiveParameter = { fg = colors.accent, bold = true, underline = true },
 
