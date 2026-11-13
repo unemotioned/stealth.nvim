@@ -72,11 +72,31 @@ for _, group in ipairs({
     assert(hl.italic and not hl.bold, group .. ' should honor keyword styles')
 end
 assert(vim.api.nvim_get_hl(0, { name = '@function.macro' }).bold, 'Function macros should honor function styles')
-for _, group in ipairs({ '@variable.member', '@property', '@field', '@string.regex', '@string.escape' }) do
-    assert(vim.api.nvim_get_hl(0, { name = group }).italic, group .. ' should honor its configured style')
+for _, group in ipairs({ '@variable.member', '@property', '@field', '@string.regexp', '@string.regex', '@string.escape' }) do
+    assert(vim.api.nvim_get_hl(0, { name = group, link = false }).italic, group .. ' should honor its configured style')
 end
 local constant_macro = vim.api.nvim_get_hl(0, { name = '@constant.macro' })
 assert(constant_macro.italic and not constant_macro.bold, 'Constant macros should honor constant styles')
+
+print('--> Testing current and legacy Treesitter capture names...')
+stealth.setup({
+    on_highlights = function(hl)
+        hl['@string.regexp'].fg = '#123456'
+        hl['@number.float'].fg = '#234567'
+        hl['@markup.strong'].italic = true
+    end,
+})
+stealth.load()
+for _, group in ipairs({ '@string.regexp', '@string.regex', '@lsp.type.regexp' }) do
+    assert(vim.api.nvim_get_hl(0, { name = group, link = false }).fg == 0x123456, group .. ' should use regexp styling')
+end
+for _, group in ipairs({ '@number.float', '@float' }) do
+    assert(vim.api.nvim_get_hl(0, { name = group, link = false }).fg == 0x234567, group .. ' should use float styling')
+end
+for _, group in ipairs({ '@markup.strong', '@markup.bold' }) do
+    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+    assert(hl.bold and hl.italic, group .. ' should use strong markup styling')
+end
 
 print('--> Testing variants...')
 local variants = { 'stealth', 'monochrome', 'emerald', 'cyan', 'violet', 'amber' }
