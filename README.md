@@ -173,4 +173,4 @@ You can also pass the generated table directly with
 
 ## 📄 License
 
-MIT License. Designed and built with ❤️ for Neovim users.
+[MIT License](LICENSE). Designed and built with ❤️ for Neovim users.
