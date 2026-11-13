@@ -66,10 +66,10 @@ stealth.setup({
 stealth.load()
 
 local my_hl = vim.api.nvim_get_hl(0, { name = 'MyCustomHighlight' })
-assert(my_hl ~= nil, 'MyCustomHighlight should exist')
+assert(my_hl.fg == 0xff00ff, 'MyCustomHighlight should use the custom color')
 
 print('--> Testing Lualine module...')
 local lualine_theme = stealth.lualine()
-assert(lualine_theme.normal ~= nil, 'Lualine normal theme should exist')
+assert(lualine_theme.normal.a.bg == '#818cf8', 'Lualine should use the configured palette')
 
 print('SUCCESS: All stealth.nvim tests passed cleanly!')
