@@ -108,7 +108,7 @@ function M.setup(colors, config)
         Exception = { fg = colors.red, bold = true },
 
         PreProc = { fg = colors.cyan },
-        Include = { fg = colors.purple, bold = true },
+        Include = vim.tbl_extend('force', { fg = colors.purple }, keyword_style),
         Define = { fg = colors.purple },
         Macro = { fg = colors.cyan },
         PreCondit = { fg = colors.purple },
@@ -146,7 +146,7 @@ function M.setup(colors, config)
         ['@keyword.return'] = vim.tbl_extend('force', { fg = colors.purple }, keyword_style),
         ['@keyword.conditional'] = vim.tbl_extend('force', { fg = colors.purple }, keyword_style),
         ['@keyword.repeat'] = vim.tbl_extend('force', { fg = colors.purple }, keyword_style),
-        ['@keyword.import'] = { fg = colors.purple, bold = true },
+        ['@keyword.import'] = vim.tbl_extend('force', { fg = colors.purple }, keyword_style),
         ['@keyword.directive'] = { fg = colors.cyan },
 
         ['@function'] = vim.tbl_extend('force', { fg = colors.green }, function_style),

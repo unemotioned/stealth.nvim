@@ -14,6 +14,22 @@ assert(vim.g.colors_name == 'stealth', 'colors_name should be stealth')
 local parameter_hl = vim.api.nvim_get_hl(0, { name = '@variable.parameter', link = false })
 assert(parameter_hl.italic == true, 'Parameters should be italic by default')
 
+print('--> Testing include keyword styles...')
+local include_foregrounds = {}
+for _, group in ipairs({ 'Include', '@keyword.import' }) do
+    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+    assert(hl.bold == true, group .. ' should be bold by default')
+    include_foregrounds[group] = hl.fg
+end
+stealth.setup({ styles = { keywords = { bold = false, italic = true } } })
+stealth.load()
+for _, group in ipairs({ 'Include', '@keyword.import' }) do
+    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+    assert(not hl.bold, group .. ' should not be bold')
+    assert(hl.italic == true, group .. ' should honor keyword styles')
+    assert(hl.fg == include_foregrounds[group], group .. ' should retain its foreground')
+end
+
 print('--> Testing parameter styles...')
 stealth.setup({ styles = { parameters = { italic = false, bold = true } } })
 stealth.load()
