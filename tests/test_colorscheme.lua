@@ -347,6 +347,38 @@ assert(blink_only.CmpItemKindMethod == nil, 'Disabling cmp should omit its compl
 assert(blink_only.BlinkCmpKindMethod ~= nil, 'Disabling cmp should not disable Blink kinds')
 assert(blink_only.BlinkCmpLabelDeprecated.strikethrough, 'Blink deprecation should not depend on cmp')
 
+print('--> Testing Mini.nvim highlights...')
+stealth.setup({ transparent = true })
+local mini_hl = stealth.highlights()
+local mini_groups = {
+    'MiniStatuslineModeNormal', 'MiniStatuslineModeInsert', 'MiniStatuslineModeVisual',
+    'MiniStatuslineModeReplace', 'MiniStatuslineModeCommand', 'MiniStatuslineModeOther',
+    'MiniStatuslineDevinfo', 'MiniStatuslineFilename', 'MiniStatuslineFileinfo', 'MiniStatuslineInactive',
+    'MiniPickNormal', 'MiniPickBorder', 'MiniPickBorderBusy', 'MiniPickBorderText', 'MiniPickCursor',
+    'MiniPickIconDirectory', 'MiniPickIconFile', 'MiniPickHeader', 'MiniPickMatchCurrent',
+    'MiniPickMatchMarked', 'MiniPickMatchRanges', 'MiniPickPreviewLine', 'MiniPickPreviewRegion',
+    'MiniPickPrompt', 'MiniPickPromptCaret', 'MiniPickPromptPrefix',
+    'MiniStarterCurrent', 'MiniStarterFooter', 'MiniStarterHeader', 'MiniStarterInactive',
+    'MiniStarterItem', 'MiniStarterItemBullet', 'MiniStarterItemPrefix', 'MiniStarterSection', 'MiniStarterQuery',
+    'MiniFilesBorder', 'MiniFilesBorderModified', 'MiniFilesCursorLine', 'MiniFilesDirectory',
+    'MiniFilesFile', 'MiniFilesNormal', 'MiniFilesTitle', 'MiniFilesTitleFocused',
+}
+for _, group in ipairs(mini_groups) do
+    assert(mini_hl[group] ~= nil, group .. ' should be defined')
+end
+stealth.load()
+assert(vim.api.nvim_get_hl(0, { name = 'MiniFilesNormal', link = false }).bg == nil, 'Mini files should be transparent')
+assert(vim.api.nvim_get_hl(0, { name = 'MiniPickNormal', link = false }).bg == nil, 'Mini pick should be transparent')
+assert(
+    vim.api.nvim_get_hl(0, { name = 'MiniStatuslineModeNormal' }).fg == 0x0e1013,
+    'Mini statusline mode text should keep a solid foreground'
+)
+stealth.setup({ plugins = { mini = false } })
+local no_mini = stealth.highlights()
+for _, group in ipairs(mini_groups) do
+    assert(no_mini[group] == nil, 'The mini switch should omit ' .. group)
+end
+
 print('--> Testing syntax reset only when syntax is enabled...')
 vim.cmd('syntax off')
 vim.g.colors_name = nil
