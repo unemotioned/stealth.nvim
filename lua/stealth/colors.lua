@@ -99,7 +99,6 @@ function M.setup(config)
         palette.fg_dim = '#474747'
         palette.comment = '#818181'
         palette.accent = '#ffffff'
-        palette.orange = '#c4c4c4'
         palette.amber = '#d4d4d4'
         palette.yellow = '#d4d4d4'
         palette.green = '#a1a1a1'

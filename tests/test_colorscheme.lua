@@ -126,7 +126,6 @@ for _, key in ipairs({
     'bg',
     'fg',
     'comment',
-    'orange',
     'amber',
     'green',
     'teal',
@@ -155,10 +154,36 @@ for _, key in ipairs({
     assert(color:sub(2, 3) == color:sub(4, 5) and color:sub(4, 5) == color:sub(6, 7), key .. ' should be grey')
 end
 assert(monochrome.diag_error == '#f43f5e', 'Monochrome should retain red errors')
+assert(monochrome.orange == '#fb923c', 'Monochrome should retain orange literals')
 local monochrome_hl = stealth.highlights()
 assert(monochrome_hl.Number.fg == monochrome.orange, 'Numbers should use the monochrome palette')
 assert(monochrome_hl.DiffChange.bg == monochrome.diff_change, 'Diff backgrounds should use the palette')
 assert(monochrome_hl.DiagnosticVirtualTextInfo.bg == monochrome.diag_bg_info, 'Diagnostic backgrounds should use the palette')
+
+print('--> Testing orange literal highlights...')
+local literal_groups = {
+    'Number', 'Float', 'Boolean', '@number', '@number.float', '@float', '@boolean',
+    '@constant.builtin', '@lsp.type.number',
+}
+for _, variant in ipairs(variants) do
+    stealth.setup({ variant = variant })
+    stealth.load()
+    for _, group in ipairs(literal_groups) do
+        local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+        assert(hl.fg == 0xfb923c, variant .. ' ' .. group .. ' should be orange')
+    end
+end
+stealth.setup({
+    variant = 'monochrome',
+    on_colors = function(colors)
+        colors.orange = '#123456'
+    end,
+})
+stealth.load()
+for _, group in ipairs(literal_groups) do
+    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+    assert(hl.fg == 0x123456, group .. ' should honor the orange palette override')
+end
 
 print('--> Testing comment and inlay hint contrast...')
 local function luminance(hex)
