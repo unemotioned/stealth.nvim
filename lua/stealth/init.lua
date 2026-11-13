@@ -13,7 +13,13 @@ end
 
 ---Load Stealth colorscheme into Neovim
 function M.load()
-    if vim.g.colors_name then
+    local previous_scheme = vim.g.colors_name
+    if vim.o.background ~= 'dark' then
+        -- Avoid reloading the previous colorscheme when changing 'background'.
+        vim.g.colors_name = nil
+        vim.o.background = 'dark'
+    end
+    if previous_scheme then
         vim.cmd('hi clear')
     end
     if vim.fn.exists('syntax_on') then

@@ -164,4 +164,18 @@ assert_backgrounds({ transparent = true, styles = { floats = 'dark', sidebars = 
     NvimTreeNormal = '#090a0d',
 })
 
+print('--> Testing dark background when switching from a light scheme...')
+vim.cmd.colorscheme('default')
+vim.o.background = 'light'
+local palette_loads = 0
+stealth.setup({
+    on_colors = function()
+        palette_loads = palette_loads + 1
+    end,
+})
+vim.cmd.colorscheme('stealth')
+assert(vim.o.background == 'dark', 'Stealth should select dark background defaults')
+assert(vim.g.colors_name == 'stealth', 'Stealth should remain the active colorscheme')
+assert(palette_loads == 1, 'Changing the background should not reload Stealth recursively')
+
 print('SUCCESS: All stealth.nvim tests passed cleanly!')
