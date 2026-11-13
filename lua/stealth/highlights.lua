@@ -458,10 +458,21 @@ function M.setup(colors, config)
         NoiceCmdline = { fg = colors.fg },
         NoiceCmdlineIcon = { fg = colors.cyan },
         NoicePopup = { fg = colors.fg, bg = float_bg },
-        NotifyERRORBorder = { fg = colors.red },
-        NotifyWARNBorder = { fg = colors.amber },
-        NotifyINFOBorder = { fg = colors.cyan },
     }
+
+    local notify_levels = {
+        ERROR = colors.diag_error,
+        WARN = colors.diag_warn,
+        INFO = colors.diag_info,
+        DEBUG = colors.fg_sub,
+        TRACE = colors.purple,
+    }
+    for level, color in pairs(notify_levels) do
+        hl['Notify' .. level .. 'Border'] = { fg = color }
+        hl['Notify' .. level .. 'Icon'] = { fg = color }
+        hl['Notify' .. level .. 'Title'] = { fg = color, bold = true }
+        hl['Notify' .. level .. 'Body'] = { fg = colors.fg }
+    end
 
     local completion_kinds = {
         Text = colors.fg_sub,

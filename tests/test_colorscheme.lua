@@ -404,6 +404,25 @@ for _, group in ipairs(oil_groups) do
     assert(no_oil[group] == nil, 'The oil switch should omit ' .. group)
 end
 
+print('--> Testing nvim-notify highlights...')
+stealth.setup()
+local notify_hl = stealth.highlights()
+for _, level in ipairs({ 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE' }) do
+    local prefix = 'Notify' .. level
+    for _, section in ipairs({ 'Border', 'Icon', 'Title', 'Body' }) do
+        assert(notify_hl[prefix .. section] ~= nil, prefix .. section .. ' should be defined')
+    end
+    assert(notify_hl[prefix .. 'Border'].fg == notify_hl[prefix .. 'Icon'].fg, prefix .. ' colors should match')
+    assert(notify_hl[prefix .. 'Title'].bold, prefix .. ' title should be bold')
+end
+stealth.setup({ plugins = { notify = false } })
+local no_notify = stealth.highlights()
+for _, level in ipairs({ 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE' }) do
+    for _, section in ipairs({ 'Border', 'Icon', 'Title', 'Body' }) do
+        assert(no_notify['Notify' .. level .. section] == nil, 'The notify switch should omit all notification groups')
+    end
+end
+
 print('--> Testing syntax reset only when syntax is enabled...')
 vim.cmd('syntax off')
 vim.g.colors_name = nil
