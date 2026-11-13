@@ -342,17 +342,19 @@ function M.setup(colors, config)
         CmpItemAbbrDeprecated = { fg = colors.fg_sub, strikethrough = true },
         CmpItemAbbrMatch = { fg = colors.accent, bold = true },
         CmpItemAbbrMatchFuzzy = { fg = colors.accent, bold = true },
-        CmpItemKindFunction = { fg = colors.green },
-        CmpItemKindMethod = { fg = colors.green },
-        CmpItemKindVariable = { fg = colors.cyan },
-        CmpItemKindKeyword = { fg = colors.indigo },
-        CmpItemKindText = { fg = colors.fg_sub },
+        CmpItemMenu = { fg = colors.fg_sub },
+        CmpItemKind = { fg = colors.fg_sub },
 
         BlinkCmpLabel = { fg = colors.fg },
+        BlinkCmpLabelDeprecated = { fg = colors.fg_sub, strikethrough = true },
         BlinkCmpLabelMatch = { fg = colors.accent, bold = true },
-        BlinkCmpKindFunction = { fg = colors.green },
-        BlinkCmpKindVariable = { fg = colors.cyan },
-        BlinkCmpKindKeyword = { fg = colors.indigo },
+        BlinkCmpLabelDetail = { fg = colors.fg_sub },
+        BlinkCmpLabelDescription = { fg = colors.fg_sub },
+        BlinkCmpSource = { fg = colors.fg_sub },
+        BlinkCmpGhostText = { fg = colors.comment, italic = true },
+        BlinkCmpMenuBorder = { fg = colors.border_highlight, bg = colors.bg_popup },
+        BlinkCmpDocBorder = { fg = colors.border_highlight, bg = float_bg },
+        BlinkCmpSignatureHelpBorder = { fg = colors.border_highlight, bg = float_bg },
 
         -- Indent Blankline
         IBLIndent = { fg = colors.fg_dim },
@@ -384,6 +386,38 @@ function M.setup(colors, config)
         NotifyWARNBorder = { fg = colors.amber },
         NotifyINFOBorder = { fg = colors.cyan },
     }
+
+    local completion_kinds = {
+        Text = colors.fg_sub,
+        Method = colors.green,
+        Function = colors.green,
+        Constructor = colors.teal,
+        Field = colors.fg_dark,
+        Variable = colors.cyan,
+        Class = colors.purple,
+        Interface = colors.purple,
+        Module = colors.cyan,
+        Property = colors.fg_dark,
+        Unit = colors.orange,
+        Value = colors.orange,
+        Enum = colors.purple,
+        Keyword = colors.indigo,
+        Snippet = colors.green,
+        Color = colors.teal,
+        File = colors.fg,
+        Reference = colors.cyan,
+        Folder = colors.cyan,
+        EnumMember = colors.cyan,
+        Constant = colors.cyan,
+        Struct = colors.purple,
+        Event = colors.amber,
+        Operator = colors.blue,
+        TypeParameter = colors.purple,
+    }
+    for kind, color in pairs(completion_kinds) do
+        hl['CmpItemKind' .. kind] = { fg = color }
+        hl['BlinkCmpKind' .. kind] = { fg = color }
+    end
 
     -- Disabling an integration omits our definitions without disabling the plugin.
     local plugins = config.plugins or {}

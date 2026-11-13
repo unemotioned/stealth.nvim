@@ -322,6 +322,31 @@ assert(
     'DiagnosticUnderlineOk should use the configured palette'
 )
 
+print('--> Testing completion highlights...')
+stealth.setup({ styles = { floats = 'transparent' } })
+stealth.load()
+local deprecated = vim.api.nvim_get_hl(0, { name = 'BlinkCmpLabelDeprecated' })
+assert(deprecated.strikethrough, 'Blink deprecated completions should be struck through')
+local completion_kinds = {
+    'Text', 'Method', 'Function', 'Constructor', 'Field', 'Variable', 'Class', 'Interface', 'Module',
+    'Property', 'Unit', 'Value', 'Enum', 'Keyword', 'Snippet', 'Color', 'File', 'Reference', 'Folder',
+    'EnumMember', 'Constant', 'Struct', 'Event', 'Operator', 'TypeParameter',
+}
+for _, kind in ipairs(completion_kinds) do
+    local cmp = vim.api.nvim_get_hl(0, { name = 'CmpItemKind' .. kind })
+    local blink = vim.api.nvim_get_hl(0, { name = 'BlinkCmpKind' .. kind })
+    assert(cmp.fg and cmp.fg == blink.fg, kind .. ' should have matching completion colors')
+end
+assert(
+    vim.api.nvim_get_hl(0, { name = 'BlinkCmpDocBorder' }).bg == nil,
+    'Blink documentation borders should follow float transparency'
+)
+stealth.setup({ plugins = { cmp = false } })
+local blink_only = stealth.highlights()
+assert(blink_only.CmpItemKindMethod == nil, 'Disabling cmp should omit its completion kinds')
+assert(blink_only.BlinkCmpKindMethod ~= nil, 'Disabling cmp should not disable Blink kinds')
+assert(blink_only.BlinkCmpLabelDeprecated.strikethrough, 'Blink deprecation should not depend on cmp')
+
 print('--> Testing syntax reset only when syntax is enabled...')
 vim.cmd('syntax off')
 vim.g.colors_name = nil
