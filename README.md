@@ -12,7 +12,7 @@ Designed with precision for focus, clarity, and modern Neovim features. Personal
 - 🎨 **Multiple Palette Variants**: `stealth` (default), `monochrome`, `emerald`, `cyan`, `violet`, and `amber`.
 - 💬 **Personalized Syntax Highlights**: Customize styles (`italic`, `bold`, `undercurl`) for comments, keywords, functions, variables, constants, and types.
 - 🪟 **Transparent Mode**: Toggle transparent background for floating windows, sidebars, or the entire editor.
-- ⚡ **Full Plugin Ecosystem Integration**:
+- ⚡ **Plugin Highlight Integrations**:
   - Treesitter & Semantic Tokens (`@lsp.type.*`)
   - Native LSP & Diagnostics
   - Telescope.nvim
@@ -125,8 +125,8 @@ require("stealth").setup({
 
   -- Override colors
   on_colors = function(colors)
-    colors.comment = "#6b7280" -- Customize comment color
-    colors.accent = "#818cf8"  -- Customize accent
+    colors.comment = "#8996a8" -- Customize comment color
+    colors.accent = "#a78bfa" -- Customize accent
   end,
 
   -- Override highlight groups
@@ -145,6 +145,10 @@ enabled. Set either style explicitly to `"dark"`, `"normal"` (the editor
 background), or `"transparent"` to override that behavior. Completion menus,
 selection highlights, and colored title labels retain their backgrounds for
 readability.
+
+When transparency is enabled, `colors.bg_base` and `colors.bg_dark_base`
+retain solid colors for inverse text and terminal black. They can be changed
+in `on_colors` independently of the transparent window backgrounds.
 
 Disabling an integration only omits Stealth's definitions; it does not disable
 the plugin or its own default highlights. The `lsp`, `semantic_tokens`, and

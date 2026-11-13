@@ -7,7 +7,7 @@ Stealth is a dark, ultra-minimalist, high-contrast colorscheme for Neovim
 designed with the aesthetic of Monkeytype's iconic "Stealth" theme.
 
 It features personalized syntax highlights for comments, keywords, functions,
-variables, strings, and types, along with full support for Treesitter, LSP,
+variables, strings, and types, along with highlight support for Treesitter, LSP,
 Semantic Tokens, Telescope, Neo-Tree, NvimTree, Gitsigns, Cmp, Blink, Lualine,
 WhichKey, and many more plugins.
 
@@ -68,8 +68,8 @@ Stealth supports detailed customization options passed into `setup()`:
         comments = { italic = true },
         keywords = { bold = true, italic = false },
         functions = { bold = false, italic = false },
-       variables = { italic = false },
-       parameters = { italic = true },
+        variables = { italic = false },
+        parameters = { italic = true },
         strings = { italic = false },
         constants = { bold = true },
         types = { bold = false },
@@ -89,7 +89,7 @@ Stealth supports detailed customization options passed into `setup()`:
 
       -- Custom color hook
       on_colors = function(colors)
-        colors.comment = "#6b7280"
+        colors.comment = "#8996a8"
       end,
 
       -- Custom highlight hook
@@ -103,6 +103,8 @@ The "auto" sidebar and float styles follow the global transparent option.
 The "normal" style uses the editor background; "dark" and "transparent"
 explicitly select an opaque or transparent window background. Completion
 menus, selections, and colored title labels retain their backgrounds.
+Use colors.bg_base and colors.bg_dark_base in on_colors to customize the
+solid inverse text and terminal black colors while transparency is enabled.
 Disabling an integration omits Stealth's definitions, not the plugin's own
 defaults. LSP, semantic token, and Treesitter flags are independent. The
 on_highlights hook runs after integration filtering.
