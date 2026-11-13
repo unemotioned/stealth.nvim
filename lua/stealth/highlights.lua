@@ -240,6 +240,7 @@ function M.setup(colors, config)
         LspReferenceWrite = { bg = colors.bg_visual },
         LspReferenceTarget = { bg = colors.bg_visual },
         LspCodeLens = { fg = colors.fg_sub },
+        LspInlayHint = { fg = colors.comment, italic = true },
         LspSignatureActiveParameter = { fg = colors.accent, bold = true, underline = true },
 
         -- Semantic Tokens

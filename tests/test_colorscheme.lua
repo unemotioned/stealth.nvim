@@ -125,6 +125,27 @@ assert(monochrome_hl.Number.fg == monochrome.orange, 'Numbers should use the mon
 assert(monochrome_hl.DiffChange.bg == monochrome.diff_change, 'Diff backgrounds should use the palette')
 assert(monochrome_hl.DiagnosticVirtualTextInfo.bg == monochrome.diag_bg_info, 'Diagnostic backgrounds should use the palette')
 
+print('--> Testing comment and inlay hint contrast...')
+local function luminance(hex)
+    local components = {}
+    for i = 2, 6, 2 do
+        local value = tonumber(hex:sub(i, i + 1), 16) / 255
+        components[#components + 1] = value <= 0.04045 and value / 12.92 or ((value + 0.055) / 1.055) ^ 2.4
+    end
+    return 0.2126 * components[1] + 0.7152 * components[2] + 0.0722 * components[3]
+end
+for _, variant in ipairs(variants) do
+    stealth.setup({ variant = variant })
+    local palette = stealth.colors()
+    local hl = stealth.highlights()
+    local background = luminance(palette.bg)
+    for _, group in ipairs({ 'Comment', 'LspInlayHint' }) do
+        local foreground = luminance(hl[group].fg)
+        local ratio = (math.max(foreground, background) + 0.05) / (math.min(foreground, background) + 0.05)
+        assert(ratio >= 4.5, variant .. ' ' .. group .. ' should have at least 4.5:1 contrast')
+    end
+end
+
 print('--> Testing custom options & overrides...')
 stealth.setup({
     transparent = true,

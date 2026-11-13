@@ -33,7 +33,7 @@ function M.setup(config)
         fg_gutter = '#3b4352',
         fg_sub = '#64748b', -- Monkeytype sub color
         fg_dim = '#3f4756', -- Stealth dim text
-        comment = '#586377', -- Personalized comment slate grey
+        comment = '#7b8799', -- Readable comment slate grey
 
         -- Main monkeytype accent (bright white / main highlight)
         main = '#ffffff',
@@ -95,7 +95,7 @@ function M.setup(config)
         palette.fg_gutter = '#434343'
         palette.fg_sub = '#777777'
         palette.fg_dim = '#474747'
-        palette.comment = '#777777'
+        palette.comment = '#818181'
         palette.accent = '#ffffff'
         palette.orange = '#c4c4c4'
         palette.amber = '#d4d4d4'
