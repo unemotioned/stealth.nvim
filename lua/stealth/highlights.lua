@@ -96,6 +96,8 @@ function M.setup(colors, config)
         WarningMsg = { fg = colors.amber, bold = true },
         Whitespace = { fg = colors.fg_dim },
         WildMenu = { fg = inverse_fg, bg = colors.cyan, bold = true },
+        WinBar = { fg = colors.fg, bg = colors.bg_dark, bold = true },
+        WinBarNC = { fg = colors.fg_sub, bg = colors.bg_dark },
 
         -- ===================================================================
         -- Standard Syntax Highlights (Personalized & Monkeytype Styled)
@@ -141,6 +143,9 @@ function M.setup(colors, config)
         Ignore = { fg = colors.fg_dim },
         Error = { fg = colors.red, bold = true },
         Todo = { fg = inverse_fg, bg = colors.amber, bold = true },
+        Added = { fg = colors.git_add },
+        Changed = { fg = colors.git_change },
+        Removed = { fg = colors.git_delete },
 
         -- ===================================================================
         -- Treesitter Highlights
@@ -226,16 +231,19 @@ function M.setup(colors, config)
         DiagnosticWarn = { fg = colors.diag_warn },
         DiagnosticInfo = { fg = colors.diag_info },
         DiagnosticHint = { fg = colors.diag_hint },
+        DiagnosticOk = { fg = colors.diag_ok },
 
         DiagnosticUnderlineError = { sp = colors.diag_error, undercurl = true },
         DiagnosticUnderlineWarn = { sp = colors.diag_warn, undercurl = true },
         DiagnosticUnderlineInfo = { sp = colors.diag_info, undercurl = true },
         DiagnosticUnderlineHint = { sp = colors.diag_hint, undercurl = true },
+        DiagnosticUnderlineOk = { sp = colors.diag_ok, undercurl = true },
 
         DiagnosticVirtualTextError = { fg = colors.diag_error, bg = colors.diag_bg_error },
         DiagnosticVirtualTextWarn = { fg = colors.diag_warn, bg = colors.diag_bg_warn },
         DiagnosticVirtualTextInfo = { fg = colors.diag_info, bg = colors.diag_bg_info },
         DiagnosticVirtualTextHint = { fg = colors.diag_hint, bg = colors.diag_bg_hint },
+        DiagnosticVirtualTextOk = { fg = colors.diag_ok, bg = colors.diag_bg_ok },
 
         -- Preserve syntax foregrounds when highlighting the symbol under the cursor.
         LspReferenceText = { bg = colors.bg_visual },

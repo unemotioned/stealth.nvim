@@ -70,10 +70,12 @@ function M.setup(config)
         diag_warn = '#f59e0b',
         diag_info = '#38bdf8',
         diag_hint = '#34d399',
+        diag_ok = '#34d399',
         diag_bg_error = '#29151c',
         diag_bg_warn = '#292115',
         diag_bg_info = '#152329',
         diag_bg_hint = '#152922',
+        diag_bg_ok = '#152922',
     }
 
     -- Apply variant overrides
@@ -120,9 +122,11 @@ function M.setup(config)
         palette.diag_warn = '#d4d4d4'
         palette.diag_info = '#cbcbcb'
         palette.diag_hint = '#a1a1a1'
+        palette.diag_ok = '#a1a1a1'
         palette.diag_bg_warn = '#242424'
         palette.diag_bg_info = '#202020'
         palette.diag_bg_hint = '#1c1c1c'
+        palette.diag_bg_ok = '#1c1c1c'
     elseif variant == 'emerald' then
         palette.accent = '#34d399'
         palette.blue = '#34d399'

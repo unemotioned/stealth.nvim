@@ -132,9 +132,11 @@ for _, key in ipairs({
     'diag_warn',
     'diag_info',
     'diag_hint',
+    'diag_ok',
     'diag_bg_warn',
     'diag_bg_info',
     'diag_bg_hint',
+    'diag_bg_ok',
 }) do
     local color = monochrome[key]
     assert(color:sub(2, 3) == color:sub(4, 5) and color:sub(4, 5) == color:sub(6, 7), key .. ' should be grey')
@@ -289,6 +291,36 @@ vim.cmd.colorscheme('stealth')
 assert(vim.o.background == 'dark', 'Stealth should select dark background defaults')
 assert(vim.g.colors_name == 'stealth', 'Stealth should remain the active colorscheme')
 assert(palette_loads == 1, 'Changing the background should not reload Stealth recursively')
+
+print('--> Testing window, diff, and OK diagnostic highlights...')
+stealth.setup({
+    on_colors = function(c)
+        c.git_add = '#123456'
+        c.git_change = '#234567'
+        c.git_delete = '#345678'
+        c.diag_ok = '#456789'
+    end,
+})
+stealth.load()
+for group, expected in pairs({
+    Added = 0x123456,
+    Changed = 0x234567,
+    Removed = 0x345678,
+    ['@diff.plus'] = 0x123456,
+    ['@diff.delta'] = 0x234567,
+    ['@diff.minus'] = 0x345678,
+    DiagnosticOk = 0x456789,
+    DiagnosticVirtualTextOk = 0x456789,
+}) do
+    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+    assert(hl.fg == expected, group .. ' should use the configured palette')
+end
+assert(vim.api.nvim_get_hl(0, { name = 'WinBar' }).bg == 0x08090b, 'WinBar should use the theme background')
+assert(vim.api.nvim_get_hl(0, { name = 'WinBarNC' }).bg == 0x08090b, 'WinBarNC should use the theme background')
+assert(
+    vim.api.nvim_get_hl(0, { name = 'DiagnosticUnderlineOk' }).sp == 0x456789,
+    'DiagnosticUnderlineOk should use the configured palette'
+)
 
 print('--> Testing syntax reset only when syntax is enabled...')
 vim.cmd('syntax off')
