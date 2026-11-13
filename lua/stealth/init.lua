@@ -22,7 +22,7 @@ function M.load()
     if previous_scheme then
         vim.cmd('hi clear')
     end
-    if vim.fn.exists('syntax_on') then
+    if vim.fn.exists('syntax_on') == 1 then
         vim.cmd('syntax reset')
     end
 

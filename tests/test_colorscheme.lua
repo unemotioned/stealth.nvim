@@ -178,4 +178,19 @@ assert(vim.o.background == 'dark', 'Stealth should select dark background defaul
 assert(vim.g.colors_name == 'stealth', 'Stealth should remain the active colorscheme')
 assert(palette_loads == 1, 'Changing the background should not reload Stealth recursively')
 
+print('--> Testing syntax reset only when syntax is enabled...')
+vim.cmd('syntax off')
+vim.g.colors_name = nil
+vim.api.nvim_set_hl(0, 'StatusLineTerm', { fg = '#123456' })
+stealth.load()
+local terminal_hl = vim.api.nvim_get_hl(0, { name = 'StatusLineTerm', link = false })
+assert(terminal_hl.fg == 0x123456, 'Syntax reset should not run while syntax is disabled')
+
+vim.cmd('syntax on')
+vim.g.colors_name = nil
+vim.api.nvim_set_hl(0, 'StatusLineTerm', { fg = '#123456' })
+stealth.load()
+terminal_hl = vim.api.nvim_get_hl(0, { name = 'StatusLineTerm', link = false })
+assert(terminal_hl.fg ~= 0x123456, 'Syntax reset should run while syntax is enabled')
+
 print('SUCCESS: All stealth.nvim tests passed cleanly!')
