@@ -100,10 +100,23 @@ end
 
 print('--> Testing variants...')
 local variants = { 'stealth', 'monochrome', 'emerald', 'cyan', 'violet', 'amber' }
+local variant_accents = {
+    stealth = 0x818cf8,
+    monochrome = 0xffffff,
+    emerald = 0x34d399,
+    cyan = 0x38bdf8,
+    violet = 0xc084fc,
+    amber = 0xf59e0b,
+}
 for _, variant in ipairs(variants) do
     print('  Testing variant: ' .. variant)
     stealth.setup({ variant = variant })
     stealth.load()
+    local title = vim.api.nvim_get_hl(0, { name = 'Title' })
+    assert(title.fg == variant_accents[variant], variant .. ' should apply its accent color')
+    local normal = vim.api.nvim_get_hl(0, { name = 'Normal' })
+    local expected_bg = variant == 'monochrome' and 0x101010 or 0x0e1013
+    assert(normal.bg == expected_bg, variant .. ' should apply its background')
 end
 
 print('--> Testing monochrome palette...')
