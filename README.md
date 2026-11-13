@@ -114,6 +114,15 @@ require("stealth").setup({
     floats = "auto",   -- "auto", "dark", "transparent", or "normal"
   },
 
+  -- Set an integration to false to omit Stealth's highlight definitions
+  plugins = {
+    telescope = true, nvimtree = true, neotree = true, whichkey = true,
+    gitsigns = true, cmp = true, blink = true, indent_blankline = true,
+    mini = true, trouble = true, dashboard = true, alpha = true,
+    noice = true, notify = true, treesitter = true, lsp = true,
+    semantic_tokens = true,
+  },
+
   -- Override colors
   on_colors = function(colors)
     colors.comment = "#6b7280" -- Customize comment color
@@ -136,6 +145,11 @@ enabled. Set either style explicitly to `"dark"`, `"normal"` (the editor
 background), or `"transparent"` to override that behavior. Completion menus,
 selection highlights, and colored title labels retain their backgrounds for
 readability.
+
+Disabling an integration only omits Stealth's definitions; it does not disable
+the plugin or its own default highlights. The `lsp`, `semantic_tokens`, and
+`treesitter` flags can be controlled independently. User `on_highlights`
+overrides run after this filtering.
 
 ---
 

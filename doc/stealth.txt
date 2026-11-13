@@ -77,6 +77,15 @@ Stealth supports detailed customization options passed into `setup()`:
         floats = "auto",   -- "auto", "dark", "transparent", "normal"
       },
 
+      -- Omit selected Stealth integration highlights
+      plugins = {
+        telescope = true, nvimtree = true, neotree = true, whichkey = true,
+        gitsigns = true, cmp = true, blink = true, indent_blankline = true,
+        mini = true, trouble = true, dashboard = true, alpha = true,
+        noice = true, notify = true, treesitter = true, lsp = true,
+        semantic_tokens = true,
+      },
+
       -- Custom color hook
       on_colors = function(colors)
         colors.comment = "#6b7280"
@@ -93,6 +102,9 @@ The "auto" sidebar and float styles follow the global transparent option.
 The "normal" style uses the editor background; "dark" and "transparent"
 explicitly select an opaque or transparent window background. Completion
 menus, selections, and colored title labels retain their backgrounds.
+Disabling an integration omits Stealth's definitions, not the plugin's own
+defaults. LSP, semantic token, and Treesitter flags are independent. The
+on_highlights hook runs after integration filtering.
 
 ==============================================================================
 INTEGRATIONS                                               *stealth-integrations*

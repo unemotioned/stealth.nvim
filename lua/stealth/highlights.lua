@@ -372,6 +372,46 @@ function M.setup(colors, config)
         NotifyINFOBorder = { fg = colors.cyan },
     }
 
+    -- Disabling an integration omits our definitions without disabling the plugin.
+    local plugins = config.plugins or {}
+    local plugin_prefixes = {
+        telescope = { 'Telescope' },
+        nvimtree = { 'NvimTree' },
+        neotree = { 'NeoTree' },
+        whichkey = { 'WhichKey' },
+        gitsigns = { 'GitSigns' },
+        cmp = { 'Cmp' },
+        blink = { 'BlinkCmp' },
+        indent_blankline = { 'IBL', 'IndentBlankline' },
+        mini = { 'Mini' },
+        trouble = { 'Trouble' },
+        dashboard = { 'Dashboard' },
+        alpha = { 'Alpha' },
+        noice = { 'Noice' },
+        notify = { 'Notify' },
+        lsp = { 'Diagnostic', 'Lsp' },
+        semantic_tokens = { '@lsp.' },
+    }
+    for plugin, prefixes in pairs(plugin_prefixes) do
+        if plugins[plugin] == false then
+            for group in pairs(hl) do
+                for _, prefix in ipairs(prefixes) do
+                    if group:sub(1, #prefix) == prefix then
+                        hl[group] = nil
+                        break
+                    end
+                end
+            end
+        end
+    end
+    if plugins.treesitter == false then
+        for group in pairs(hl) do
+            if group:sub(1, 1) == '@' and group:sub(1, 5) ~= '@lsp.' then
+                hl[group] = nil
+            end
+        end
+    end
+
     -- User custom highlights hook
     if type(config.on_highlights) == 'function' then
         config.on_highlights(hl, colors)

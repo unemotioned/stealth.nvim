@@ -264,4 +264,48 @@ stealth.load()
 terminal_hl = vim.api.nvim_get_hl(0, { name = 'StatusLineTerm', link = false })
 assert(terminal_hl.fg ~= 0x123456, 'Syntax reset should run while syntax is enabled')
 
+print('--> Testing integration switches...')
+local integrations = {
+    telescope = 'TelescopeNormal',
+    nvimtree = 'NvimTreeNormal',
+    neotree = 'NeoTreeNormal',
+    whichkey = 'WhichKey',
+    gitsigns = 'GitSignsAdd',
+    cmp = 'CmpItemAbbr',
+    blink = 'BlinkCmpLabel',
+    indent_blankline = 'IBLIndent',
+    trouble = 'TroubleNormal',
+    dashboard = 'DashboardHeader',
+    alpha = 'AlphaHeader',
+    noice = 'NoicePopup',
+    notify = 'NotifyERRORBorder',
+    treesitter = '@keyword',
+    lsp = 'DiagnosticError',
+    semantic_tokens = '@lsp.type.function',
+}
+for integration, group in pairs(integrations) do
+    stealth.setup({ plugins = { [integration] = false } })
+    local hl = stealth.highlights()
+    assert(hl[group] == nil, integration .. ' should omit ' .. group)
+    assert(hl.Normal ~= nil, integration .. ' should not omit core highlights')
+end
+stealth.setup({
+    plugins = { telescope = false, treesitter = false },
+    on_highlights = function(hl)
+        assert(hl.TelescopeNormal == nil, 'Integration filtering should run before the user hook')
+        hl.TelescopeNormal = { fg = '#123456' }
+    end,
+})
+local filtered_hl = stealth.highlights()
+assert(filtered_hl.TelescopeNormal.fg == '#123456', 'User hooks should be able to restore disabled highlights')
+assert(filtered_hl['@lsp.type.function'] ~= nil, 'Treesitter and semantic token switches should be independent')
+stealth.setup()
+stealth.load()
+stealth.setup({ plugins = { telescope = false } })
+stealth.load()
+assert(
+    vim.tbl_isempty(vim.api.nvim_get_hl(0, { name = 'TelescopeNormal' })),
+    'Disabling an integration and reloading should clear its previous highlights'
+)
+
 print('SUCCESS: All stealth.nvim tests passed cleanly!')
