@@ -115,24 +115,14 @@ for _, variant in ipairs(variants) do
     local title = vim.api.nvim_get_hl(0, { name = 'Title' })
     assert(title.fg == variant_accents[variant], variant .. ' should apply its accent color')
     local normal = vim.api.nvim_get_hl(0, { name = 'Normal' })
-    local expected_bg = variant == 'monochrome' and 0x101010 or 0x0e1013
-    assert(normal.bg == expected_bg, variant .. ' should apply its background')
+    assert(normal.bg == 0x0e1013, variant .. ' should apply its background')
 end
 
 print('--> Testing monochrome palette...')
 stealth.setup({ variant = 'monochrome' })
 local monochrome = stealth.colors()
 for _, key in ipairs({
-    'bg',
-    'fg',
     'comment',
-    'amber',
-    'green',
-    'teal',
-    'cyan',
-    'blue',
-    'indigo',
-    'purple',
     'git_add',
     'git_change',
     'git_delete',
@@ -153,9 +143,42 @@ for _, key in ipairs({
     local color = monochrome[key]
     assert(color:sub(2, 3) == color:sub(4, 5) and color:sub(4, 5) == color:sub(6, 7), key .. ' should be grey')
 end
+for key, expected in pairs({
+    bg = '#0e1013',
+    bg_dark = '#08090b',
+    bg_float = '#12151b',
+    bg_highlight = '#181b22',
+    bg_visual = '#262b35',
+    bg_search = '#383f4f',
+    bg_line = '#15181e',
+    bg_sidebar = '#090a0d',
+    bg_popup = '#13161c',
+    border = '#2b313d',
+    border_highlight = '#4b5568',
+    win_separator = '#232833',
+    fg = '#e2e8f0',
+    fg_dark = '#cbd5e1',
+    fg_gutter = '#3b4352',
+    fg_sub = '#64748b',
+    fg_dim = '#3f4756',
+    main = '#ffffff',
+    accent = '#ffffff',
+    amber = '#d4d4d8',
+    green = '#a1a1aa',
+    teal = '#71717a',
+    cyan = '#cbd5e1',
+    blue = '#cbd5e1',
+    indigo = '#94a3b8',
+    purple = '#e2e8f0',
+}) do
+    assert(monochrome[key] == expected, 'Monochrome ' .. key .. ' should retain its original color')
+end
 assert(monochrome.diag_error == '#f43f5e', 'Monochrome should retain red errors')
 assert(monochrome.orange == '#fb923c', 'Monochrome should retain orange literals')
 local monochrome_hl = stealth.highlights()
+assert(monochrome_hl.Normal.fg == '#e2e8f0', 'Normal text should use the original slate white')
+assert(monochrome_hl.Normal.bg == '#0e1013', 'Normal background should use the original charcoal')
+assert(monochrome_hl['@type'].fg == '#e2e8f0', 'Types should use the original slate white')
 assert(monochrome_hl.Number.fg == monochrome.orange, 'Numbers should use the monochrome palette')
 assert(monochrome_hl.DiffChange.bg == monochrome.diff_change, 'Diff backgrounds should use the palette')
 assert(monochrome_hl.DiagnosticVirtualTextInfo.bg == monochrome.diag_bg_info, 'Diagnostic backgrounds should use the palette')
