@@ -44,6 +44,7 @@ M.defaults = {
         telescope = true,
         nvimtree = true,
         neotree = true,
+        oil = true,
         whichkey = true,
         gitsigns = true,
         cmp = true,

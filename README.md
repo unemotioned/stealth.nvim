@@ -116,7 +116,7 @@ require("stealth").setup({
 
   -- Set an integration to false to omit Stealth's highlight definitions
   plugins = {
-    telescope = true, nvimtree = true, neotree = true, whichkey = true,
+    telescope = true, nvimtree = true, neotree = true, oil = true, whichkey = true,
     gitsigns = true, cmp = true, blink = true, indent_blankline = true,
     mini = true, trouble = true, dashboard = true, alpha = true,
     noice = true, notify = true, treesitter = true, lsp = true,

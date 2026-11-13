@@ -379,6 +379,31 @@ for _, group in ipairs(mini_groups) do
     assert(no_mini[group] == nil, 'The mini switch should omit ' .. group)
 end
 
+print('--> Testing Oil.nvim highlights...')
+stealth.setup()
+local oil_hl = stealth.highlights()
+local oil_groups = {
+    'OilEmpty', 'OilHidden', 'OilDir', 'OilDirHidden', 'OilDirIcon', 'OilSocket',
+    'OilSocketHidden', 'OilLink', 'OilOrphanLink', 'OilLinkHidden', 'OilOrphanLinkHidden',
+    'OilLinkTarget', 'OilOrphanLinkTarget', 'OilLinkTargetHidden', 'OilOrphanLinkTargetHidden',
+    'OilFile', 'OilFileHidden', 'OilCreate', 'OilDelete', 'OilMove', 'OilCopy', 'OilChange',
+    'OilRestore', 'OilPurge', 'OilTrash', 'OilTrashSourcePath',
+}
+for _, group in ipairs(oil_groups) do
+    assert(oil_hl[group] ~= nil, group .. ' should be defined')
+end
+stealth.load()
+assert(
+    vim.api.nvim_get_hl(0, { name = 'OilDir', link = false }).fg
+        == vim.api.nvim_get_hl(0, { name = 'Directory' }).fg,
+    'Oil directories should follow the theme directory color'
+)
+stealth.setup({ plugins = { oil = false } })
+local no_oil = stealth.highlights()
+for _, group in ipairs(oil_groups) do
+    assert(no_oil[group] == nil, 'The oil switch should omit ' .. group)
+end
+
 print('--> Testing syntax reset only when syntax is enabled...')
 vim.cmd('syntax off')
 vim.g.colors_name = nil
@@ -399,6 +424,7 @@ local integrations = {
     telescope = 'TelescopeNormal',
     nvimtree = 'NvimTreeNormal',
     neotree = 'NeoTreeNormal',
+    oil = 'OilDir',
     whichkey = 'WhichKey',
     gitsigns = 'GitSignsAdd',
     cmp = 'CmpItemAbbr',
