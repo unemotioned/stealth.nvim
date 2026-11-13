@@ -60,24 +60,69 @@ function M.setup(config)
         git_change = '#60a5fa',
         git_delete = '#f43f5e',
         git_dirty = '#fb923c',
+        diff_add = '#142e23',
+        diff_change = '#16273b',
+        diff_delete = '#3b171f',
+        diff_text = '#25476d',
 
         -- Diagnostic Colors
         diag_error = '#f43f5e',
         diag_warn = '#f59e0b',
         diag_info = '#38bdf8',
         diag_hint = '#34d399',
+        diag_bg_error = '#29151c',
+        diag_bg_warn = '#292115',
+        diag_bg_info = '#152329',
+        diag_bg_hint = '#152922',
     }
 
     -- Apply variant overrides
     if variant == 'monochrome' then
+        palette.bg = '#101010'
+        palette.bg_dark = '#090909'
+        palette.bg_float = '#151515'
+        palette.bg_highlight = '#1b1b1b'
+        palette.bg_visual = '#2b2b2b'
+        palette.bg_search = '#3f3f3f'
+        palette.bg_line = '#181818'
+        palette.bg_sidebar = '#0a0a0a'
+        palette.bg_popup = '#161616'
+        palette.border = '#313131'
+        palette.border_highlight = '#555555'
+        palette.win_separator = '#292929'
+        palette.fg = '#e8e8e8'
+        palette.fg_dark = '#d5d5d5'
+        palette.fg_gutter = '#434343'
+        palette.fg_sub = '#777777'
+        palette.fg_dim = '#474747'
+        palette.comment = '#777777'
         palette.accent = '#ffffff'
-        palette.blue = '#cbd5e1'
-        palette.indigo = '#94a3b8'
-        palette.purple = '#e2e8f0'
-        palette.cyan = '#cbd5e1'
-        palette.green = '#a1a1aa'
-        palette.teal = '#71717a'
-        palette.amber = '#d4d4d8'
+        palette.orange = '#c4c4c4'
+        palette.amber = '#d4d4d4'
+        palette.yellow = '#d4d4d4'
+        palette.green = '#a1a1a1'
+        palette.emerald = '#a1a1a1'
+        palette.teal = '#a8a8a8'
+        palette.cyan = '#cbcbcb'
+        palette.blue = '#bcbcbc'
+        palette.indigo = '#a3a3a3'
+        palette.purple = '#e2e2e2'
+        palette.magenta = '#d0d0d0'
+        palette.pink = '#d0d0d0'
+        palette.git_add = '#a1a1a1'
+        palette.git_change = '#bcbcbc'
+        palette.git_delete = '#d4d4d4'
+        palette.git_dirty = '#c4c4c4'
+        palette.diff_add = '#1c1c1c'
+        palette.diff_change = '#202020'
+        palette.diff_delete = '#262626'
+        palette.diff_text = '#383838'
+        palette.diag_warn = '#d4d4d4'
+        palette.diag_info = '#cbcbcb'
+        palette.diag_hint = '#a1a1a1'
+        palette.diag_bg_warn = '#242424'
+        palette.diag_bg_info = '#202020'
+        palette.diag_bg_hint = '#1c1c1c'
     elseif variant == 'emerald' then
         palette.accent = '#34d399'
         palette.blue = '#34d399'

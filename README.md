@@ -144,7 +144,7 @@ readability.
 | Variant | Accent / Key Features |
 | :--- | :--- |
 | `stealth` (Default) | Iconic Monkeytype white main accent, emerald mint functions, sky cyan types, slate comments. |
-| `monochrome` | Ultra-minimalist black, grey, and white palette with sharp red diagnostics. |
+| `monochrome` | Neutral black, grey, and white UI, syntax, and Git colors, with red errors. |
 | `emerald` | Stealth dark background paired with vibrant emerald mint accents. |
 | `cyan` | Cool arctic cyan and sky blue accents on matte black background. |
 | `violet` | Elegant lavender and violet accents for a dark cyberpunk vibe. |

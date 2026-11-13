@@ -86,6 +86,45 @@ for _, variant in ipairs(variants) do
     stealth.load()
 end
 
+print('--> Testing monochrome palette...')
+stealth.setup({ variant = 'monochrome' })
+local monochrome = stealth.colors()
+for _, key in ipairs({
+    'bg',
+    'fg',
+    'comment',
+    'orange',
+    'amber',
+    'green',
+    'teal',
+    'cyan',
+    'blue',
+    'indigo',
+    'purple',
+    'git_add',
+    'git_change',
+    'git_delete',
+    'git_dirty',
+    'diff_add',
+    'diff_change',
+    'diff_delete',
+    'diff_text',
+    'diag_warn',
+    'diag_info',
+    'diag_hint',
+    'diag_bg_warn',
+    'diag_bg_info',
+    'diag_bg_hint',
+}) do
+    local color = monochrome[key]
+    assert(color:sub(2, 3) == color:sub(4, 5) and color:sub(4, 5) == color:sub(6, 7), key .. ' should be grey')
+end
+assert(monochrome.diag_error == '#f43f5e', 'Monochrome should retain red errors')
+local monochrome_hl = stealth.highlights()
+assert(monochrome_hl.Number.fg == monochrome.orange, 'Numbers should use the monochrome palette')
+assert(monochrome_hl.DiffChange.bg == monochrome.diff_change, 'Diff backgrounds should use the palette')
+assert(monochrome_hl.DiagnosticVirtualTextInfo.bg == monochrome.diag_bg_info, 'Diagnostic backgrounds should use the palette')
+
 print('--> Testing custom options & overrides...')
 stealth.setup({
     transparent = true,
