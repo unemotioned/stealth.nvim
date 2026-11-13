@@ -12,4 +12,4 @@
 - The load pipeline is palette/variant/transparency → `on_colors` → highlight table → `on_highlights` → `nvim_set_hl` → optional terminal colors. Keep user hooks after built-in overrides. `colors()` and `highlights()` regenerate tables and rerun the relevant hooks.
 - Plugin highlights live in the single table in `lua/stealth/highlights.lua`. The `plugins` flags in `config.lua` are currently unused; do not assume setting one to `false` disables an integration.
 - Sidebar and float styles default to `"auto"`, which follows global `transparent`. Explicit `"dark"`, `"normal"`, and `"transparent"` styles override that behavior; completion menus and colored title labels retain their backgrounds.
-- Lualine is exposed as `require("stealth").lualine()` (returns the theme table). Despite the README/help examples, there is no `lua/lualine/themes/stealth.lua` discovery module for `theme = "stealth"`; the smoke test checks only the table-returning API.
+- Lualine is available through `require("stealth").lualine()` and the `lua/lualine/themes/stealth.lua` discovery module. Lualine style attributes use `gui`, not Neovim's `bold` boolean.

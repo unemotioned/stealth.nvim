@@ -166,6 +166,9 @@ require('lualine').setup({
 })
 ```
 
+You can also pass the generated table directly with
+`theme = require("stealth").lualine()`.
+
 ---
 
 ## 📄 License

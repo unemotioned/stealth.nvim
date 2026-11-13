@@ -94,6 +94,14 @@ print('--> Testing Lualine module...')
 local lualine_theme = stealth.lualine()
 assert(lualine_theme.normal.a.bg == '#818cf8', 'Lualine should use the configured palette')
 assert(lualine_theme.normal.a.fg == '#0e1013', 'Lualine should retain a solid foreground')
+for _, mode in ipairs({ 'normal', 'insert', 'visual', 'replace', 'command' }) do
+    assert(lualine_theme[mode].a.gui == 'bold', 'Lualine ' .. mode .. ' mode should use its bold style')
+end
+local lualine_files = vim.api.nvim_get_runtime_file('lua/lualine/themes/stealth.lua', false)
+assert(#lualine_files == 1, 'Lualine should be able to discover the stealth theme')
+assert(dofile(lualine_files[1]).normal.a.bg == lualine_theme.normal.a.bg, 'Discovered Lualine theme should match')
+stealth.setup({ variant = 'emerald' })
+assert(dofile(lualine_files[1]).normal.a.bg == '#34d399', 'Lualine discovery should reflect the current variant')
 
 stealth.setup({
     transparent = true,
