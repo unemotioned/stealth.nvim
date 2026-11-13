@@ -3,7 +3,7 @@ local M = {}
 ---Apply terminal colors based on palette
 ---@param colors table
 function M.setup(colors)
-    vim.g.terminal_color_0 = colors.bg_dark
+    vim.g.terminal_color_0 = colors.bg_dark == colors.none and colors.bg_dark_base or colors.bg_dark
     vim.g.terminal_color_1 = colors.red
     vim.g.terminal_color_2 = colors.green
     vim.g.terminal_color_3 = colors.amber

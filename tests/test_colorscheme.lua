@@ -74,8 +74,37 @@ stealth.load()
 local my_hl = vim.api.nvim_get_hl(0, { name = 'MyCustomHighlight' })
 assert(my_hl.fg == 0xff00ff, 'MyCustomHighlight should use the custom color')
 
+print('--> Testing transparent inverse text and terminal colors...')
+for _, group in ipairs({
+    'Cursor',
+    'IncSearch',
+    'CurSearch',
+    'Substitute',
+    'Todo',
+    '@comment.note',
+    '@comment.todo',
+    'TelescopePromptTitle',
+}) do
+    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+    assert(hl.fg == 0x0e1013, group .. ' should retain a solid foreground')
+end
+assert(vim.g.terminal_color_0 == '#08090b', 'Terminal black should remain a valid solid color')
+
 print('--> Testing Lualine module...')
 local lualine_theme = stealth.lualine()
 assert(lualine_theme.normal.a.bg == '#818cf8', 'Lualine should use the configured palette')
+assert(lualine_theme.normal.a.fg == '#0e1013', 'Lualine should retain a solid foreground')
+
+stealth.setup({
+    transparent = true,
+    on_colors = function(c)
+        c.bg_base = '#010203'
+        c.bg_dark_base = '#040506'
+    end,
+})
+stealth.load()
+assert(vim.api.nvim_get_hl(0, { name = 'Todo' }).fg == 0x010203, 'Solid background override should be used')
+assert(vim.g.terminal_color_0 == '#040506', 'Solid terminal background override should be used')
+assert(stealth.lualine().normal.a.fg == '#010203', 'Lualine should use the solid background override')
 
 print('SUCCESS: All stealth.nvim tests passed cleanly!')

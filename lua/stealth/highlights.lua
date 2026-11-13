@@ -16,6 +16,7 @@ function M.setup(colors, config)
     local string_style = styles.strings or {}
     local constant_style = styles.constants or { bold = true }
     local type_style = styles.types or {}
+    local inverse_fg = colors.bg == colors.none and colors.bg_base or colors.bg
 
     local hl = {
         -- ===================================================================
@@ -34,9 +35,9 @@ function M.setup(colors, config)
 
         ColorColumn = { bg = colors.bg_line },
         Conceal = { fg = colors.fg_sub },
-        Cursor = { fg = colors.bg, bg = colors.main },
-        lCursor = { fg = colors.bg, bg = colors.main },
-        CursorIM = { fg = colors.bg, bg = colors.main },
+        Cursor = { fg = inverse_fg, bg = colors.main },
+        lCursor = { fg = inverse_fg, bg = colors.main },
+        CursorIM = { fg = inverse_fg, bg = colors.main },
         CursorColumn = { bg = colors.bg_line },
         CursorLine = { bg = colors.bg_line },
         Directory = { fg = colors.cyan, bold = true },
@@ -44,17 +45,17 @@ function M.setup(colors, config)
         DiffChange = { bg = '#16273b' },
         DiffDelete = { bg = '#3b171f' },
         DiffText = { bg = '#25476d' },
-        EndOfBuffer = { fg = colors.bg },
+        EndOfBuffer = { fg = inverse_fg },
         ErrorMsg = { fg = colors.red, bold = true },
         WinSeparator = { fg = colors.win_separator },
         VertSplit = { fg = colors.win_separator },
         Folded = { fg = colors.fg_sub, bg = colors.bg_highlight },
         FoldColumn = { fg = colors.fg_gutter, bg = colors.bg },
         SignColumn = { fg = colors.fg_gutter, bg = colors.bg },
-        IncSearch = { fg = colors.bg, bg = colors.amber, bold = true },
-        CurSearch = { fg = colors.bg, bg = colors.amber, bold = true },
+        IncSearch = { fg = inverse_fg, bg = colors.amber, bold = true },
+        CurSearch = { fg = inverse_fg, bg = colors.amber, bold = true },
         Search = { fg = colors.fg, bg = colors.bg_search },
-        Substitute = { fg = colors.bg, bg = colors.red, bold = true },
+        Substitute = { fg = inverse_fg, bg = colors.red, bold = true },
         LineNr = { fg = colors.fg_gutter },
         CursorLineNr = { fg = colors.fg, bold = true },
         MatchParen = { fg = colors.orange, bg = colors.bg_visual, bold = true },
@@ -83,7 +84,7 @@ function M.setup(colors, config)
         VisualNOS = { bg = colors.bg_visual },
         WarningMsg = { fg = colors.amber, bold = true },
         Whitespace = { fg = colors.fg_dim },
-        WildMenu = { fg = colors.bg, bg = colors.cyan, bold = true },
+        WildMenu = { fg = inverse_fg, bg = colors.cyan, bold = true },
 
         -- ===================================================================
         -- Standard Syntax Highlights (Personalized & Monkeytype Styled)
@@ -128,17 +129,17 @@ function M.setup(colors, config)
         Underlined = { underline = true },
         Ignore = { fg = colors.fg_dim },
         Error = { fg = colors.red, bold = true },
-        Todo = { fg = colors.bg, bg = colors.amber, bold = true },
+        Todo = { fg = inverse_fg, bg = colors.amber, bold = true },
 
         -- ===================================================================
         -- Treesitter Highlights
         -- ===================================================================
         ['@comment'] = vim.tbl_extend('force', { fg = colors.comment }, comment_style),
         ['@comment.documentation'] = vim.tbl_extend('force', { fg = colors.comment, bold = true }, comment_style),
-        ['@comment.note'] = { fg = colors.bg, bg = colors.cyan, bold = true },
-        ['@comment.todo'] = { fg = colors.bg, bg = colors.amber, bold = true },
-        ['@comment.warning'] = { fg = colors.bg, bg = colors.amber, bold = true },
-        ['@comment.error'] = { fg = colors.bg, bg = colors.red, bold = true },
+        ['@comment.note'] = { fg = inverse_fg, bg = colors.cyan, bold = true },
+        ['@comment.todo'] = { fg = inverse_fg, bg = colors.amber, bold = true },
+        ['@comment.warning'] = { fg = inverse_fg, bg = colors.amber, bold = true },
+        ['@comment.error'] = { fg = inverse_fg, bg = colors.red, bold = true },
 
         ['@keyword'] = vim.tbl_extend('force', { fg = colors.indigo }, keyword_style),
         ['@keyword.function'] = vim.tbl_extend('force', { fg = colors.blue }, keyword_style),
@@ -251,9 +252,9 @@ function M.setup(colors, config)
         TelescopeBorder = { fg = colors.border_highlight, bg = colors.bg_float },
         TelescopePromptNormal = { fg = colors.fg, bg = colors.bg_highlight },
         TelescopePromptBorder = { fg = colors.border_highlight, bg = colors.bg_highlight },
-        TelescopePromptTitle = { fg = colors.bg, bg = colors.accent, bold = true },
-        TelescopePreviewTitle = { fg = colors.bg, bg = colors.green, bold = true },
-        TelescopeResultsTitle = { fg = colors.bg, bg = colors.cyan, bold = true },
+        TelescopePromptTitle = { fg = inverse_fg, bg = colors.accent, bold = true },
+        TelescopePreviewTitle = { fg = inverse_fg, bg = colors.green, bold = true },
+        TelescopeResultsTitle = { fg = inverse_fg, bg = colors.cyan, bold = true },
         TelescopeSelection = { fg = colors.main, bg = colors.bg_visual, bold = true },
         TelescopeSelectionCaret = { fg = colors.accent, bold = true },
         TelescopeMatching = { fg = colors.amber, bold = true },

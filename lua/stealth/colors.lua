@@ -104,6 +104,10 @@ function M.setup(config)
         palette.green = '#fcd34d'
     end
 
+    -- Keep solid colors for inverse text and terminal colors in transparent mode.
+    palette.bg_base = palette.bg
+    palette.bg_dark_base = palette.bg_dark
+
     -- Transparent background handling
     if config.transparent then
         palette.bg = 'NONE'
