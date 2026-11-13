@@ -37,8 +37,8 @@ M.defaults = {
         strings = { italic = false },
         constants = { bold = true },
         types = { bold = false },
-        sidebars = 'dark', -- "dark", "transparent", or "normal"
-        floats = 'dark', -- "dark", "transparent", or "normal"
+        sidebars = 'auto', -- "auto", "dark", "transparent", or "normal"
+        floats = 'auto', -- "auto", "dark", "transparent", or "normal"
     },
     plugins = {
         telescope = true,

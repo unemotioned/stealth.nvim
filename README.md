@@ -110,8 +110,8 @@ require("stealth").setup({
     strings = { italic = false },
     constants = { bold = true },
     types = { bold = false },
-    sidebars = "dark", -- "dark", "transparent", or "normal"
-    floats = "dark",   -- "dark", "transparent", or "normal"
+    sidebars = "auto", -- "auto", "dark", "transparent", or "normal"
+    floats = "auto",   -- "auto", "dark", "transparent", or "normal"
   },
 
   -- Override colors
@@ -129,6 +129,13 @@ require("stealth").setup({
 
 vim.cmd.colorscheme("stealth")
 ```
+
+With `"auto"`, sidebars and supported floating windows follow `transparent`:
+they use their dark backgrounds by default and become transparent when it is
+enabled. Set either style explicitly to `"dark"`, `"normal"` (the editor
+background), or `"transparent"` to override that behavior. Completion menus,
+selection highlights, and colored title labels retain their backgrounds for
+readability.
 
 ---
 

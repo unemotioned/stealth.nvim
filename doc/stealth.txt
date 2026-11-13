@@ -73,8 +73,8 @@ Stealth supports detailed customization options passed into `setup()`:
         strings = { italic = false },
         constants = { bold = true },
         types = { bold = false },
-        sidebars = "dark", -- "dark", "transparent", "normal"
-        floats = "dark",   -- "dark", "transparent", "normal"
+        sidebars = "auto", -- "auto", "dark", "transparent", "normal"
+        floats = "auto",   -- "auto", "dark", "transparent", "normal"
       },
 
       -- Custom color hook
@@ -88,6 +88,11 @@ Stealth supports detailed customization options passed into `setup()`:
       end,
     })
     <
+
+The "auto" sidebar and float styles follow the global transparent option.
+The "normal" style uses the editor background; "dark" and "transparent"
+explicitly select an opaque or transparent window background. Completion
+menus, selections, and colored title labels retain their backgrounds.
 
 ==============================================================================
 INTEGRATIONS                                               *stealth-integrations*

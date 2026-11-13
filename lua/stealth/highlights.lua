@@ -18,6 +18,17 @@ function M.setup(colors, config)
     local type_style = styles.types or {}
     local inverse_fg = colors.bg == colors.none and colors.bg_base or colors.bg
 
+    local function window_bg(style, dark_bg)
+        if style == 'transparent' or ((style == nil or style == 'auto') and config.transparent) then
+            return colors.none
+        end
+        return style == 'normal' and colors.bg or dark_bg
+    end
+
+    local float_bg = window_bg(styles.floats, colors.bg_float)
+    local sidebar_bg = window_bg(styles.sidebars, colors.bg_sidebar)
+    local prompt_bg = (float_bg == colors.none or styles.floats == 'normal') and float_bg or colors.bg_highlight
+
     local hl = {
         -- ===================================================================
         -- Standard Vim UI Highlights
@@ -25,13 +36,13 @@ function M.setup(colors, config)
         Normal = { fg = colors.fg, bg = colors.bg },
         NormalNC = config.dim_inactive and { fg = colors.fg_dark, bg = colors.bg_dark }
             or { fg = colors.fg, bg = colors.bg },
-        NormalFloat = { fg = colors.fg, bg = config.styles.floats == 'transparent' and colors.none or colors.bg_float },
+        NormalFloat = { fg = colors.fg, bg = float_bg },
         FloatBorder = {
             fg = colors.border_highlight,
-            bg = config.styles.floats == 'transparent' and colors.none or colors.bg_float,
+            bg = float_bg,
         },
-        FloatTitle = { fg = colors.accent, bg = colors.bg_float, bold = true },
-        FloatFooter = { fg = colors.fg_sub, bg = colors.bg_float },
+        FloatTitle = { fg = colors.accent, bg = float_bg, bold = true },
+        FloatFooter = { fg = colors.fg_sub, bg = float_bg },
 
         ColorColumn = { bg = colors.bg_line },
         Conceal = { fg = colors.fg_sub },
@@ -248,10 +259,10 @@ function M.setup(colors, config)
         -- ===================================================================
 
         -- Telescope.nvim
-        TelescopeNormal = { fg = colors.fg, bg = colors.bg_float },
-        TelescopeBorder = { fg = colors.border_highlight, bg = colors.bg_float },
-        TelescopePromptNormal = { fg = colors.fg, bg = colors.bg_highlight },
-        TelescopePromptBorder = { fg = colors.border_highlight, bg = colors.bg_highlight },
+        TelescopeNormal = { fg = colors.fg, bg = float_bg },
+        TelescopeBorder = { fg = colors.border_highlight, bg = float_bg },
+        TelescopePromptNormal = { fg = colors.fg, bg = prompt_bg },
+        TelescopePromptBorder = { fg = colors.border_highlight, bg = prompt_bg },
         TelescopePromptTitle = { fg = inverse_fg, bg = colors.accent, bold = true },
         TelescopePreviewTitle = { fg = inverse_fg, bg = colors.green, bold = true },
         TelescopeResultsTitle = { fg = inverse_fg, bg = colors.cyan, bold = true },
@@ -262,11 +273,11 @@ function M.setup(colors, config)
         -- NvimTree / NeoTree
         NvimTreeNormal = {
             fg = colors.fg,
-            bg = config.styles.sidebars == 'transparent' and colors.none or colors.bg_sidebar,
+            bg = sidebar_bg,
         },
         NvimTreeNormalNC = {
             fg = colors.fg,
-            bg = config.styles.sidebars == 'transparent' and colors.none or colors.bg_sidebar,
+            bg = sidebar_bg,
         },
         NvimTreeRootFolder = { fg = colors.accent, bold = true },
         NvimTreeFolderIcon = { fg = colors.cyan },
@@ -279,11 +290,11 @@ function M.setup(colors, config)
 
         NeoTreeNormal = {
             fg = colors.fg,
-            bg = config.styles.sidebars == 'transparent' and colors.none or colors.bg_sidebar,
+            bg = sidebar_bg,
         },
         NeoTreeNormalNC = {
             fg = colors.fg,
-            bg = config.styles.sidebars == 'transparent' and colors.none or colors.bg_sidebar,
+            bg = sidebar_bg,
         },
         NeoTreeRootName = { fg = colors.accent, bold = true },
         NeoTreeDirectoryName = { fg = colors.fg },
@@ -297,8 +308,8 @@ function M.setup(colors, config)
         WhichKeyGroup = { fg = colors.purple, bold = true },
         WhichKeyDesc = { fg = colors.fg },
         WhichKeyIcon = { fg = colors.green },
-        WhichKeyBorder = { fg = colors.border_highlight, bg = colors.bg_float },
-        WhichKeyNormal = { bg = colors.bg_float },
+        WhichKeyBorder = { fg = colors.border_highlight, bg = float_bg },
+        WhichKeyNormal = { bg = float_bg },
 
         -- Gitsigns
         GitSignsAdd = { fg = colors.git_add },
@@ -331,7 +342,7 @@ function M.setup(colors, config)
         IndentBlanklineContextChar = { fg = colors.border_highlight },
 
         -- Trouble
-        TroubleNormal = { fg = colors.fg, bg = colors.bg_float },
+        TroubleNormal = { fg = colors.fg, bg = float_bg },
         TroubleText = { fg = colors.fg },
         TroubleCount = { fg = colors.purple, bold = true },
         TroubleSignError = { fg = colors.diag_error },
@@ -348,7 +359,7 @@ function M.setup(colors, config)
         -- Noice / Notify
         NoiceCmdline = { fg = colors.fg },
         NoiceCmdlineIcon = { fg = colors.cyan },
-        NoicePopup = { fg = colors.fg, bg = colors.bg_float },
+        NoicePopup = { fg = colors.fg, bg = float_bg },
         NotifyERRORBorder = { fg = colors.red },
         NotifyWARNBorder = { fg = colors.amber },
         NotifyINFOBorder = { fg = colors.cyan },

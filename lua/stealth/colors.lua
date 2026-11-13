@@ -112,8 +112,6 @@ function M.setup(config)
     if config.transparent then
         palette.bg = 'NONE'
         palette.bg_dark = 'NONE'
-        palette.bg_sidebar = 'NONE'
-        palette.bg_float = '#12151b'
     end
 
     -- User custom colors hook

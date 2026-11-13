@@ -107,4 +107,53 @@ assert(vim.api.nvim_get_hl(0, { name = 'Todo' }).fg == 0x010203, 'Solid backgrou
 assert(vim.g.terminal_color_0 == '#040506', 'Solid terminal background override should be used')
 assert(stealth.lualine().normal.a.fg == '#010203', 'Lualine should use the solid background override')
 
+print('--> Testing float and sidebar backgrounds...')
+local function assert_backgrounds(options, expected)
+    stealth.setup(options)
+    local hl = stealth.highlights()
+    for group, bg in pairs(expected) do
+        assert(hl[group].bg == bg, group .. ' background should be ' .. bg)
+    end
+end
+
+assert_backgrounds({}, {
+    Normal = '#0e1013',
+    NormalFloat = '#12151b',
+    NvimTreeNormal = '#090a0d',
+})
+assert_backgrounds({ transparent = true }, {
+    Normal = 'NONE',
+    NormalFloat = 'NONE',
+    FloatBorder = 'NONE',
+    FloatTitle = 'NONE',
+    FloatFooter = 'NONE',
+    NvimTreeNormal = 'NONE',
+    NeoTreeNormal = 'NONE',
+    TelescopeNormal = 'NONE',
+    TelescopeBorder = 'NONE',
+    TelescopePromptNormal = 'NONE',
+    TelescopePromptBorder = 'NONE',
+    WhichKeyNormal = 'NONE',
+    WhichKeyBorder = 'NONE',
+    TroubleNormal = 'NONE',
+    NoicePopup = 'NONE',
+})
+assert_backgrounds({ styles = { floats = 'transparent', sidebars = 'transparent' } }, {
+    Normal = '#0e1013',
+    NormalFloat = 'NONE',
+    NvimTreeNormal = 'NONE',
+    TelescopePromptNormal = 'NONE',
+})
+assert_backgrounds({ styles = { floats = 'normal', sidebars = 'normal' } }, {
+    NormalFloat = '#0e1013',
+    FloatTitle = '#0e1013',
+    NvimTreeNormal = '#0e1013',
+    TelescopePromptNormal = '#0e1013',
+})
+assert_backgrounds({ transparent = true, styles = { floats = 'dark', sidebars = 'dark' } }, {
+    Normal = 'NONE',
+    NormalFloat = '#12151b',
+    NvimTreeNormal = '#090a0d',
+})
+
 print('SUCCESS: All stealth.nvim tests passed cleanly!')
