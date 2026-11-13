@@ -5,6 +5,12 @@ if not ok then
     os.exit(1)
 end
 
+print('--> Testing load without setup...')
+vim.cmd.colorscheme('stealth')
+assert(vim.g.colors_name == 'stealth', 'colors_name should be stealth without setup')
+assert(vim.g.terminal_color_0 == '#08090b', 'Default terminal colors should be initialized')
+assert(stealth.highlights()['@variable.parameter'].italic == true, 'Default styles should be initialized')
+
 print('--> Testing default setup & load...')
 stealth.setup()
 stealth.load()

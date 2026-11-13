@@ -16,6 +16,12 @@ USAGE                                                          *stealth-usage*
 
 To load the default Stealth theme:
 
+    >vim
+    colorscheme stealth
+    <
+
+Call setup() first when passing custom options:
+
     >lua
     require('stealth').setup()
     vim.cmd.colorscheme('stealth')

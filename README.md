@@ -32,6 +32,9 @@ Designed with precision for focus, clarity, and modern Neovim features. Personal
 
 ## ⚡ Installation
 
+For the default settings, `:colorscheme stealth` also works without calling
+`setup()`.
+
 ### [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua

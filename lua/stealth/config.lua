@@ -66,7 +66,7 @@ M.defaults = {
 }
 
 ---@type StealthConfig
-M.options = {}
+M.options = vim.deepcopy(M.defaults)
 
 ---Setup user configuration
 ---@param options StealthConfig|nil
