@@ -46,6 +46,38 @@ for _, group in ipairs({ '@variable.parameter', '@lsp.type.parameter' }) do
     assert(hl.fg == parameter_hl.fg, group .. ' should retain its foreground')
 end
 
+print('--> Testing styles on specialized syntax captures...')
+stealth.setup({
+    styles = {
+        keywords = { bold = false, italic = true },
+        functions = { bold = true },
+        variables = { italic = true },
+        strings = { italic = true },
+        constants = { bold = false, italic = true },
+    },
+})
+stealth.load()
+for _, group in ipairs({
+    'Exception',
+    'Define',
+    'PreCondit',
+    '@keyword.operator',
+    '@keyword.directive',
+    '@keyword.directive.define',
+    '@keyword.exception',
+    '@keyword.modifier',
+    '@keyword.conditional.ternary',
+}) do
+    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+    assert(hl.italic and not hl.bold, group .. ' should honor keyword styles')
+end
+assert(vim.api.nvim_get_hl(0, { name = '@function.macro' }).bold, 'Function macros should honor function styles')
+for _, group in ipairs({ '@variable.member', '@property', '@field', '@string.regex', '@string.escape' }) do
+    assert(vim.api.nvim_get_hl(0, { name = group }).italic, group .. ' should honor its configured style')
+end
+local constant_macro = vim.api.nvim_get_hl(0, { name = '@constant.macro' })
+assert(constant_macro.italic and not constant_macro.bold, 'Constant macros should honor constant styles')
+
 print('--> Testing variants...')
 local variants = { 'stealth', 'monochrome', 'emerald', 'cyan', 'violet', 'amber' }
 for _, variant in ipairs(variants) do
