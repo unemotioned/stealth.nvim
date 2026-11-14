@@ -1,17 +1,24 @@
 # 🥷 stealth.nvim
 
-An ultra-minimalist, matte-black, high-contrast Neovim colorscheme inspired by **Monkeytype's Stealth** theme.
+An ultra-minimalist, matte-black, high-contrast Neovim colorscheme inspired by
+**Monkeytype's Stealth** theme.
 
-Designed with precision for focus, clarity, and modern Neovim features. Personalized token styling for comments, keywords, functions, variables, strings, types, and rich integration with popular Neovim plugins.
+Designed with precision for focus, clarity, and modern Neovim features.
+Personalized token styling for comments, keywords, functions, variables,
+strings, types, and rich integration with popular Neovim plugins.
 
 ---
 
 ## ✨ Features
 
-- 🎯 **Monkeytype Stealth Aesthetic**: Deep matte-black backgrounds, crisp white accents, and slate grey secondary hierarchy.
-- 🎨 **Monochrome Palette**: Cool charcoal and slate-white tones, with orange literals, yellow warnings, and red errors.
-- 💬 **Personalized Syntax Highlights**: Customize styles (`italic`, `bold`, `undercurl`) for comments, keywords, functions, variables, constants, and types.
-- 🪟 **Transparent Mode**: Toggle transparent background for floating windows, sidebars, or the entire editor.
+- 🎯 **Monkeytype Stealth Aesthetic**: Deep matte-black backgrounds, crisp
+  white accents, and slate grey secondary hierarchy.
+- 🎨 **Monochrome Palette**: Cool charcoal and slate-white tones, with orange
+  literals, yellow warnings, and red errors.
+- 💬 **Personalized Syntax Highlights**: Customize styles (`italic`, `bold`,
+  `undercurl`) for comments, keywords, functions, variables, constants, and types.
+- 🪟 **Transparent Mode**: Toggle transparent background for floating windows,
+  sidebars, or the entire editor.
 - ⚡ **Plugin Highlight Integrations**:
   - Treesitter & Semantic Tokens (`@lsp.type.*`)
   - Native LSP & Diagnostics
@@ -24,7 +31,6 @@ Designed with precision for focus, clarity, and modern Neovim features. Personal
   - Mini.nvim (Statusline, Pick, Starter, Files)
   - Trouble.nvim
   - Dashboard-nvim / Alpha-nvim
-  - Noice.nvim / nvim-notify
 - 📊 **Lualine Theme Integration**: Included out-of-the-box via `theme = "stealth"`.
 - 💻 **Terminal Colors**: Automatic setup for `:terminal` colors (`vim.g.terminal_color_*`).
 
@@ -39,14 +45,14 @@ For the default settings, `:colorscheme stealth` also works without calling
 
 ```lua
 {
-  "LucFerrei/stealth.nvim",
-  lazy = false,
-  priority = 1000,
-  opts = {},
-  config = function(_, opts)
-    require("stealth").setup(opts)
-    vim.cmd.colorscheme("stealth")
-  end,
+    "LucFerrei/stealth.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+    config = function(_, opts)
+        require("stealth").setup(opts)
+        vim.cmd.colorscheme("stealth")
+    end,
 }
 ```
 
@@ -54,11 +60,11 @@ For the default settings, `:colorscheme stealth` also works without calling
 
 ```lua
 use {
-  'LucFerrei/stealth.nvim',
-  config = function()
-    require('stealth').setup()
-    vim.cmd('colorscheme stealth')
-  end
+    'LucFerrei/stealth.nvim',
+    config = function()
+        require('stealth').setup()
+        vim.cmd('colorscheme stealth')
+    end
 }
 ```
 
@@ -69,8 +75,8 @@ Plug 'LucFerrei/stealth.nvim'
 
 " In your lua configuration
 lua << EOF
-  require('stealth').setup()
-  vim.cmd('colorscheme stealth')
+    require('stealth').setup()
+    vim.cmd('colorscheme stealth')
 EOF
 ```
 
@@ -82,49 +88,60 @@ Default settings can be overridden by passing a configuration table to `setup()`
 
 ```lua
 require("stealth").setup({
-  -- Enable transparent background
-  transparent = false,
+    -- Enable transparent background
+    transparent = false,
 
-  -- Dim background of inactive windows
-  dim_inactive = false,
+    -- Dim background of inactive windows
+    dim_inactive = false,
 
-  -- Set terminal colors (vim.g.terminal_color_*)
-  terminal_colors = true,
+    -- Set terminal colors (vim.g.terminal_color_*)
+    terminal_colors = true,
 
-  -- Personalized syntax styles
-  styles = {
-    comments = { bold = false, italic = false },
-    keywords = { bold = false, italic = false },
-    functions = { bold = false, italic = false },
-    variables = { bold = false, italic = false },
-    parameters = { bold = false, italic = false },
-    strings = { bold = false, italic = false },
-    constants = { bold = false, italic = false },
-    types = { bold = false, italic = false },
-    sidebars = "auto", -- "auto", "dark", "transparent", or "normal"
-    floats = "auto",   -- "auto", "dark", "transparent", or "normal"
-  },
+    -- Personalized syntax styles
+    styles = {
+        comments = { bold = false, italic = false },
+        keywords = { bold = false, italic = false },
+        functions = { bold = false, italic = false },
+        variables = { bold = false, italic = false },
+        parameters = { bold = false, italic = false },
+        strings = { bold = false, italic = false },
+        constants = { bold = false, italic = false },
+        types = { bold = false, italic = false },
+        sidebars = "auto", ---@type 'auto'|'dark'|'transparent'|'normal'
+        floats = "auto", ---@type 'auto'|'dark'|'transparent'|'normal'
+    },
 
-  -- Set an integration to false to omit Stealth's highlight definitions
-  plugins = {
-    telescope = true, nvimtree = true, neotree = true, oil = true, whichkey = true,
-    gitsigns = true, cmp = true, blink = true, indent_blankline = true,
-    mini = true, trouble = true, dashboard = true, alpha = true,
-    noice = true, notify = true, treesitter = true, lsp = true,
-    semantic_tokens = true,
-  },
+    -- Set an integration to false to omit Stealth's highlight definitions
+    plugins = {
+        alpha = true,
+        blink = true,
+        cmp = true,
+        dashboard = true,
+        gitsigns = true,
+        indent_blankline = true,
+        lsp = true,
+        mini = true,
+        neotree = true,
+        nvimtree = true,
+        oil = true,
+        semantic_tokens = true,
+        telescope = true,
+        treesitter = true,
+        trouble = true,
+        whichkey = true,
+    },
 
-  -- Override colors
-  on_colors = function(colors)
-    colors.comment = "#8996a8" -- Customize comment color
-    colors.accent = "#eeeeee" -- Customize accent
-  end,
+    -- Override colors
+    on_colors = function(colors)
+        colors.comment = "#8996a8" -- Customize comment color
+        colors.accent = "#eeeeee" -- Customize accent
+    end,
 
-  -- Override highlight groups
-  on_highlights = function(highlights, colors)
-    highlights.Comment = { fg = colors.comment }
-    highlights.Function = { fg = colors.green }
-  end,
+    -- Override highlight groups
+    on_highlights = function(highlights, colors)
+        highlights.Comment = { fg = colors.comment }
+        highlights.Function = { fg = colors.green }
+    end,
 })
 
 vim.cmd.colorscheme("stealth")
@@ -165,11 +182,11 @@ Simply specify `'stealth'` as your theme in Lualine:
 
 ```lua
 require('lualine').setup({
-  options = {
-    theme = 'stealth',
-    component_separators = '',
-    section_separators = '',
-  }
+    options = {
+      theme = 'stealth',
+      component_separators = '',
+      section_separators = '',
+    }
 })
 ```
 

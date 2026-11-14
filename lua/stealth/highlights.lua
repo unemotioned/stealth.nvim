@@ -464,26 +464,7 @@ function M.setup(colors, config)
         AlphaHeader = { fg = colors.accent },
         AlphaButtons = { fg = colors.cyan },
         AlphaFooter = { fg = colors.fg_sub },
-
-        -- Noice / Notify
-        NoiceCmdline = { fg = colors.fg },
-        NoiceCmdlineIcon = { fg = colors.cyan },
-        NoicePopup = { fg = colors.fg, bg = float_bg },
     }
-
-    local notify_levels = {
-        ERROR = colors.diag_error,
-        WARN = colors.diag_warn,
-        INFO = colors.diag_info,
-        DEBUG = colors.fg_sub,
-        TRACE = colors.purple,
-    }
-    for level, color in pairs(notify_levels) do
-        hl['Notify' .. level .. 'Border'] = { fg = color }
-        hl['Notify' .. level .. 'Icon'] = { fg = color }
-        hl['Notify' .. level .. 'Title'] = { fg = color }
-        hl['Notify' .. level .. 'Body'] = { fg = colors.fg }
-    end
 
     local completion_kinds = {
         Text = colors.fg_sub,
@@ -520,23 +501,21 @@ function M.setup(colors, config)
     -- Disabling an integration omits our definitions without disabling the plugin.
     local plugins = config.plugins or {}
     local plugin_prefixes = {
-        telescope = { 'Telescope' },
-        nvimtree = { 'NvimTree' },
-        neotree = { 'NeoTree' },
-        oil = { 'Oil' },
-        whichkey = { 'WhichKey' },
-        gitsigns = { 'GitSigns' },
-        cmp = { 'Cmp' },
-        blink = { 'BlinkCmp' },
-        indent_blankline = { 'IBL', 'IndentBlankline' },
-        mini = { 'Mini' },
-        trouble = { 'Trouble' },
-        dashboard = { 'Dashboard' },
         alpha = { 'Alpha' },
-        noice = { 'Noice' },
-        notify = { 'Notify' },
+        blink = { 'BlinkCmp' },
+        cmp = { 'Cmp' },
+        dashboard = { 'Dashboard' },
+        gitsigns = { 'GitSigns' },
+        indent_blankline = { 'IBL', 'IndentBlankline' },
         lsp = { 'Diagnostic', 'Lsp' },
+        mini = { 'Mini' },
+        neotree = { 'NeoTree' },
+        nvimtree = { 'NvimTree' },
+        oil = { 'Oil' },
         semantic_tokens = { '@lsp.' },
+        telescope = { 'Telescope' },
+        trouble = { 'Trouble' },
+        whichkey = { 'WhichKey' },
     }
     for plugin, prefixes in pairs(plugin_prefixes) do
         if plugins[plugin] == false then

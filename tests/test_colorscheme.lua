@@ -234,9 +234,6 @@ for _, group in ipairs({
     'WarningMsg',
     'TroubleSignWarning',
     'MiniFilesBorderModified',
-    'NotifyWARNBorder',
-    'NotifyWARNIcon',
-    'NotifyWARNTitle',
 }) do
     local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
     assert(hl.fg == 0xfbbf24, group .. ' should use the warning color')
@@ -257,7 +254,7 @@ stealth.setup({
     end,
 })
 stealth.load()
-for _, group in ipairs({ 'DiagnosticWarn', 'WarningMsg', 'NotifyWARNIcon' }) do
+for _, group in ipairs({ 'DiagnosticWarn', 'WarningMsg' }) do
     assert(vim.api.nvim_get_hl(0, { name = group }).fg == 0x123456, group .. ' should honor the warning override')
 end
 for _, group in ipairs({ 'Todo', '@comment.todo', '@comment.warning' }) do
@@ -399,7 +396,6 @@ assert_backgrounds({ transparent = true }, {
     WhichKeyNormal = 'NONE',
     WhichKeyBorder = 'NONE',
     TroubleNormal = 'NONE',
-    NoicePopup = 'NONE',
 })
 assert_backgrounds({ styles = { floats = 'transparent', sidebars = 'transparent' } }, {
     Normal = '#0e1013',
@@ -545,23 +541,12 @@ for _, group in ipairs(oil_groups) do
     assert(no_oil[group] == nil, 'The oil switch should omit ' .. group)
 end
 
-print('--> Testing nvim-notify highlights...')
+print('--> Testing removed integrations...')
 stealth.setup()
-local notify_hl = stealth.highlights()
-for _, level in ipairs({ 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE' }) do
-    local prefix = 'Notify' .. level
-    for _, section in ipairs({ 'Border', 'Icon', 'Title', 'Body' }) do
-        assert(notify_hl[prefix .. section] ~= nil, prefix .. section .. ' should be defined')
-    end
-    assert(notify_hl[prefix .. 'Border'].fg == notify_hl[prefix .. 'Icon'].fg, prefix .. ' colors should match')
-    assert(not notify_hl[prefix .. 'Title'].bold, prefix .. ' title should not be bold')
-end
-stealth.setup({ plugins = { notify = false } })
-local no_notify = stealth.highlights()
-for _, level in ipairs({ 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE' }) do
-    for _, section in ipairs({ 'Border', 'Icon', 'Title', 'Body' }) do
-        assert(no_notify['Notify' .. level .. section] == nil, 'The notify switch should omit all notification groups')
-    end
+local plugins = require('stealth.config').defaults.plugins
+assert(plugins.noice == nil and plugins.notify == nil, 'Removed integrations should not have configuration flags')
+for group in pairs(stealth.highlights()) do
+    assert(not group:match('^Noice') and not group:match('^Notify'), group .. ' should not be defined')
 end
 
 print('--> Testing Markdown and HTML syntax font styles...')
@@ -625,23 +610,21 @@ assert(terminal_hl.fg ~= 0x123456, 'Syntax reset should run while syntax is enab
 
 print('--> Testing integration switches...')
 local integrations = {
-    telescope = 'TelescopeNormal',
-    nvimtree = 'NvimTreeNormal',
-    neotree = 'NeoTreeNormal',
-    oil = 'OilDir',
-    whichkey = 'WhichKey',
-    gitsigns = 'GitSignsAdd',
-    cmp = 'CmpItemAbbr',
-    blink = 'BlinkCmpLabel',
-    indent_blankline = 'IBLIndent',
-    trouble = 'TroubleNormal',
-    dashboard = 'DashboardHeader',
     alpha = 'AlphaHeader',
-    noice = 'NoicePopup',
-    notify = 'NotifyERRORBorder',
-    treesitter = '@keyword',
+    blink = 'BlinkCmpLabel',
+    cmp = 'CmpItemAbbr',
+    dashboard = 'DashboardHeader',
+    gitsigns = 'GitSignsAdd',
+    indent_blankline = 'IBLIndent',
     lsp = 'DiagnosticError',
+    neotree = 'NeoTreeNormal',
+    nvimtree = 'NvimTreeNormal',
+    oil = 'OilDir',
     semantic_tokens = '@lsp.type.function',
+    telescope = 'TelescopeNormal',
+    treesitter = '@keyword',
+    trouble = 'TroubleNormal',
+    whichkey = 'WhichKey',
 }
 for integration, group in pairs(integrations) do
     stealth.setup({ plugins = { [integration] = false } })
@@ -667,5 +650,22 @@ assert(
     vim.tbl_isempty(vim.api.nvim_get_hl(0, { name = 'TelescopeNormal' })),
     'Disabling an integration and reloading should clear its previous highlights'
 )
+
+print('--> Testing documentation examples...')
+local function assert_lua_examples(path, pattern)
+    local content = table.concat(vim.fn.readfile(path), '\n')
+    local count = 0
+    for example in content:gmatch(pattern) do
+        count = count + 1
+        if example:match('^%s*{') then
+            example = 'return ' .. example
+        end
+        local chunk, err = loadstring(example)
+        assert(chunk, path .. ' Lua example ' .. count .. ' is invalid: ' .. tostring(err))
+    end
+    assert(count > 0, path .. ' should contain Lua examples')
+end
+assert_lua_examples('README.md', '```lua\n(.-)\n```')
+assert_lua_examples('doc/stealth.txt', '>lua\n(.-)\n%s*<')
 
 print('SUCCESS: All stealth.nvim tests passed cleanly!')
