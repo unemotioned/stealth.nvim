@@ -9,7 +9,7 @@ Designed with precision for focus, clarity, and modern Neovim features. Personal
 ## ✨ Features
 
 - 🎯 **Monkeytype Stealth Aesthetic**: Deep matte-black backgrounds, crisp white accents, and slate grey secondary hierarchy.
-- 🎨 **Monochrome Palette**: Cool charcoal and slate-white tones, with orange literals and red errors.
+- 🎨 **Monochrome Palette**: Cool charcoal and slate-white tones, with orange literals, yellow warnings, and red errors.
 - 💬 **Personalized Syntax Highlights**: Customize styles (`italic`, `bold`, `undercurl`) for comments, keywords, functions, variables, constants, and types.
 - 🪟 **Transparent Mode**: Toggle transparent background for floating windows, sidebars, or the entire editor.
 - ⚡ **Plugin Highlight Integrations**:

@@ -66,7 +66,7 @@ function M.setup(config)
 
         -- Diagnostic Colors
         diag_error = '#f43f5e',
-        diag_warn = '#d4d4d4',
+        diag_warn = '#fbbf24',
         diag_info = '#cbcbcb',
         diag_hint = '#a1a1a1',
         diag_ok = '#a1a1a1',

@@ -94,8 +94,9 @@ Stealth supports detailed customization options passed into `setup()`:
     })
     <
 
-The monochrome palette is the only palette. The former variant option no
-longer selects a palette and can be removed from existing configurations.
+The monochrome palette uses orange literals, yellow warnings and TODOs, and
+red errors. The former variant option no longer selects a palette and can be
+removed from existing configurations.
 
 The "auto" sidebar and float styles follow the global transparent option.
 The "normal" style uses the editor background; "dark" and "transparent"

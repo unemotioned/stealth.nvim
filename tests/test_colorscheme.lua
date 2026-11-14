@@ -113,7 +113,6 @@ for _, key in ipairs({
     'diff_change',
     'diff_delete',
     'diff_text',
-    'diag_warn',
     'diag_info',
     'diag_hint',
     'diag_ok',
@@ -156,6 +155,7 @@ for key, expected in pairs({
     assert(monochrome[key] == expected, 'Monochrome ' .. key .. ' should retain its original color')
 end
 assert(monochrome.diag_error == '#f43f5e', 'Monochrome should retain red errors')
+assert(monochrome.diag_warn == '#fbbf24', 'Warnings should use the yellow diagnostic color')
 assert(monochrome.orange == '#fb923c', 'Monochrome should retain orange literals')
 local monochrome_hl = stealth.highlights()
 assert(monochrome_hl.Normal.fg == '#e2e8f0', 'Normal text should use the original slate white')
@@ -166,6 +166,47 @@ assert(monochrome_hl.DiffChange.bg == monochrome.diff_change, 'Diff backgrounds 
 assert(monochrome_hl.DiagnosticVirtualTextInfo.bg == monochrome.diag_bg_info, 'Diagnostic backgrounds should use the palette')
 stealth.setup({ variant = 'emerald' })
 assert(vim.deep_equal(stealth.colors(), monochrome), 'The retired variant option should not change the palette')
+
+print('--> Testing warning and TODO highlights...')
+stealth.setup()
+stealth.load()
+for _, group in ipairs({
+    'DiagnosticWarn',
+    'DiagnosticSignWarn',
+    'DiagnosticFloatingWarn',
+    'DiagnosticVirtualTextWarn',
+    'WarningMsg',
+    'TroubleSignWarning',
+    'MiniFilesBorderModified',
+    'NotifyWARNBorder',
+    'NotifyWARNIcon',
+    'NotifyWARNTitle',
+}) do
+    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+    assert(hl.fg == 0xfbbf24, group .. ' should use the warning color')
+end
+assert(
+    vim.api.nvim_get_hl(0, { name = 'DiagnosticUnderlineWarn' }).sp == 0xfbbf24,
+    'Diagnostic underline should use the warning color'
+)
+for _, group in ipairs({ 'Todo', '@comment.todo', '@comment.warning' }) do
+    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+    assert(hl.fg == 0x0e1013 and hl.bg == 0xfbbf24 and hl.bold, group .. ' should use the warning color')
+end
+assert(vim.api.nvim_get_hl(0, { name = 'IncSearch' }).bg == 0xd4d4d8, 'Search should retain its original color')
+
+stealth.setup({
+    on_colors = function(colors)
+        colors.diag_warn = '#123456'
+    end,
+})
+stealth.load()
+for _, group in ipairs({ 'DiagnosticWarn', 'WarningMsg', 'NotifyWARNIcon' }) do
+    assert(vim.api.nvim_get_hl(0, { name = group }).fg == 0x123456, group .. ' should honor the warning override')
+end
+for _, group in ipairs({ 'Todo', '@comment.todo', '@comment.warning' }) do
+    assert(vim.api.nvim_get_hl(0, { name = group }).bg == 0x123456, group .. ' should honor the warning override')
+end
 
 print('--> Testing orange literal highlights...')
 local literal_groups = {
