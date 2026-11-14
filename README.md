@@ -9,7 +9,7 @@ Designed with precision for focus, clarity, and modern Neovim features. Personal
 ## ✨ Features
 
 - 🎯 **Monkeytype Stealth Aesthetic**: Deep matte-black backgrounds, crisp white accents, and slate grey secondary hierarchy.
-- 🎨 **Multiple Palette Variants**: `stealth` (default), `monochrome`, `emerald`, `cyan`, `violet`, and `amber`.
+- 🎨 **Monochrome Palette**: Cool charcoal and slate-white tones, with orange literals and red errors.
 - 💬 **Personalized Syntax Highlights**: Customize styles (`italic`, `bold`, `undercurl`) for comments, keywords, functions, variables, constants, and types.
 - 🪟 **Transparent Mode**: Toggle transparent background for floating windows, sidebars, or the entire editor.
 - ⚡ **Plugin Highlight Integrations**:
@@ -43,7 +43,6 @@ For the default settings, `:colorscheme stealth` also works without calling
   lazy = false,
   priority = 1000,
   opts = {
-    variant = "stealth",
     styles = {
       comments = { italic = true },
       keywords = { bold = true },
@@ -88,9 +87,6 @@ Default settings can be overridden by passing a configuration table to `setup()`
 
 ```lua
 require("stealth").setup({
-  -- Palette variant: "stealth" (default), "monochrome", "emerald", "cyan", "violet", "amber"
-  variant = "stealth",
-
   -- Enable transparent background
   transparent = false,
 
@@ -126,7 +122,7 @@ require("stealth").setup({
   -- Override colors
   on_colors = function(colors)
     colors.comment = "#8996a8" -- Customize comment color
-    colors.accent = "#a78bfa" -- Customize accent
+    colors.accent = "#eeeeee" -- Customize accent
   end,
 
   -- Override highlight groups
@@ -157,16 +153,10 @@ overrides run after this filtering.
 
 ---
 
-## 🎨 Palette Variants
+## 🎨 Palette
 
-| Variant | Accent / Key Features |
-| :--- | :--- |
-| `stealth` (Default) | Iconic Monkeytype white main accent, emerald mint functions, sky cyan types, slate comments. |
-| `monochrome` | Cool charcoal and slate-white palette, with orange literals and red errors. |
-| `emerald` | Stealth dark background paired with vibrant emerald mint accents. |
-| `cyan` | Cool arctic cyan and sky blue accents on matte black background. |
-| `violet` | Elegant lavender and violet accents for a dark cyberpunk vibe. |
-| `amber` | Tactical golden amber accents on matte black background. |
+Stealth uses the monochrome palette by default. The previous `variant` option
+no longer selects a palette and can be removed from existing configurations.
 
 ---
 

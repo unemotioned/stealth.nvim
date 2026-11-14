@@ -10,6 +10,8 @@ vim.cmd.colorscheme('stealth')
 assert(vim.g.colors_name == 'stealth', 'colors_name should be stealth without setup')
 assert(vim.g.terminal_color_0 == '#08090b', 'Default terminal colors should be initialized')
 assert(stealth.highlights()['@variable.parameter'].italic == true, 'Default styles should be initialized')
+assert(vim.api.nvim_get_hl(0, { name = 'Title' }).fg == 0xffffff, 'Default accent should be monochrome')
+assert(vim.api.nvim_get_hl(0, { name = 'Number' }).fg == 0xfb923c, 'Default literals should be orange')
 
 print('--> Testing default setup & load...')
 stealth.setup()
@@ -98,28 +100,8 @@ for _, group in ipairs({ '@markup.strong', '@markup.bold' }) do
     assert(hl.bold and hl.italic, group .. ' should use strong markup styling')
 end
 
-print('--> Testing variants...')
-local variants = { 'stealth', 'monochrome', 'emerald', 'cyan', 'violet', 'amber' }
-local variant_accents = {
-    stealth = 0x818cf8,
-    monochrome = 0xffffff,
-    emerald = 0x34d399,
-    cyan = 0x38bdf8,
-    violet = 0xc084fc,
-    amber = 0xf59e0b,
-}
-for _, variant in ipairs(variants) do
-    print('  Testing variant: ' .. variant)
-    stealth.setup({ variant = variant })
-    stealth.load()
-    local title = vim.api.nvim_get_hl(0, { name = 'Title' })
-    assert(title.fg == variant_accents[variant], variant .. ' should apply its accent color')
-    local normal = vim.api.nvim_get_hl(0, { name = 'Normal' })
-    assert(normal.bg == 0x0e1013, variant .. ' should apply its background')
-end
-
-print('--> Testing monochrome palette...')
-stealth.setup({ variant = 'monochrome' })
+print('--> Testing the default monochrome palette...')
+stealth.setup()
 local monochrome = stealth.colors()
 for _, key in ipairs({
     'comment',
@@ -182,22 +164,21 @@ assert(monochrome_hl['@type'].fg == '#e2e8f0', 'Types should use the original sl
 assert(monochrome_hl.Number.fg == monochrome.orange, 'Numbers should use the monochrome palette')
 assert(monochrome_hl.DiffChange.bg == monochrome.diff_change, 'Diff backgrounds should use the palette')
 assert(monochrome_hl.DiagnosticVirtualTextInfo.bg == monochrome.diag_bg_info, 'Diagnostic backgrounds should use the palette')
+stealth.setup({ variant = 'emerald' })
+assert(vim.deep_equal(stealth.colors(), monochrome), 'The retired variant option should not change the palette')
 
 print('--> Testing orange literal highlights...')
 local literal_groups = {
     'Number', 'Float', 'Boolean', '@number', '@number.float', '@float', '@boolean',
     '@constant.builtin', '@lsp.type.number',
 }
-for _, variant in ipairs(variants) do
-    stealth.setup({ variant = variant })
-    stealth.load()
-    for _, group in ipairs(literal_groups) do
-        local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
-        assert(hl.fg == 0xfb923c, variant .. ' ' .. group .. ' should be orange')
-    end
+stealth.setup()
+stealth.load()
+for _, group in ipairs(literal_groups) do
+    local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+    assert(hl.fg == 0xfb923c, group .. ' should be orange')
 end
 stealth.setup({
-    variant = 'monochrome',
     on_colors = function(colors)
         colors.orange = '#123456'
     end,
@@ -217,16 +198,14 @@ local function luminance(hex)
     end
     return 0.2126 * components[1] + 0.7152 * components[2] + 0.0722 * components[3]
 end
-for _, variant in ipairs(variants) do
-    stealth.setup({ variant = variant })
-    local palette = stealth.colors()
-    local hl = stealth.highlights()
-    local background = luminance(palette.bg)
-    for _, group in ipairs({ 'Comment', 'LspInlayHint' }) do
-        local foreground = luminance(hl[group].fg)
-        local ratio = (math.max(foreground, background) + 0.05) / (math.min(foreground, background) + 0.05)
-        assert(ratio >= 4.5, variant .. ' ' .. group .. ' should have at least 4.5:1 contrast')
-    end
+stealth.setup()
+local palette = stealth.colors()
+local hl = stealth.highlights()
+local background = luminance(palette.bg)
+for _, group in ipairs({ 'Comment', 'LspInlayHint' }) do
+    local foreground = luminance(hl[group].fg)
+    local ratio = (math.max(foreground, background) + 0.05) / (math.min(foreground, background) + 0.05)
+    assert(ratio >= 4.5, group .. ' should have at least 4.5:1 contrast')
 end
 
 print('--> Testing custom options & overrides...')
@@ -267,7 +246,7 @@ assert(vim.g.terminal_color_0 == '#08090b', 'Terminal black should remain a vali
 
 print('--> Testing Lualine module...')
 local lualine_theme = stealth.lualine()
-assert(lualine_theme.normal.a.bg == '#818cf8', 'Lualine should use the configured palette')
+assert(lualine_theme.normal.a.bg == '#ffffff', 'Lualine should use the monochrome palette')
 assert(lualine_theme.normal.a.fg == '#0e1013', 'Lualine should retain a solid foreground')
 for _, mode in ipairs({ 'normal', 'insert', 'visual', 'replace', 'command' }) do
     assert(lualine_theme[mode].a.gui == 'bold', 'Lualine ' .. mode .. ' mode should use its bold style')
@@ -275,8 +254,12 @@ end
 local lualine_files = vim.api.nvim_get_runtime_file('lua/lualine/themes/stealth.lua', false)
 assert(#lualine_files == 1, 'Lualine should be able to discover the stealth theme')
 assert(dofile(lualine_files[1]).normal.a.bg == lualine_theme.normal.a.bg, 'Discovered Lualine theme should match')
-stealth.setup({ variant = 'emerald' })
-assert(dofile(lualine_files[1]).normal.a.bg == '#34d399', 'Lualine discovery should reflect the current variant')
+stealth.setup({
+    on_colors = function(c)
+        c.accent = '#123456'
+    end,
+})
+assert(dofile(lualine_files[1]).normal.a.bg == '#123456', 'Lualine discovery should reflect palette overrides')
 
 stealth.setup({
     transparent = true,

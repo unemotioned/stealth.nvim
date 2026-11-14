@@ -49,11 +49,6 @@ Stealth supports detailed customization options passed into `setup()`:
 
     >lua
     require('stealth').setup({
-      -- Select theme palette variant:
-      -- "stealth" (default monkeytype white/slate accent),
-      -- "monochrome", "emerald", "cyan", "violet", "amber"
-      variant = "stealth",
-
       -- Enable transparent background
       transparent = false,
 
@@ -98,6 +93,9 @@ Stealth supports detailed customization options passed into `setup()`:
       end,
     })
     <
+
+The monochrome palette is the only palette. The former variant option no
+longer selects a palette and can be removed from existing configurations.
 
 The "auto" sidebar and float styles follow the global transparent option.
 The "normal" style uses the editor background; "dark" and "transparent"

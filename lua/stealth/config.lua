@@ -13,7 +13,6 @@ local M = {}
 ---@field floats string|table<string, boolean>
 
 ---@class StealthConfig
----@field variant string|'"stealth"'|'"monochrome"'|'"emerald"'|'"cyan"'|'"violet"'|'"amber"'
 ---@field transparent boolean
 ---@field dim_inactive boolean
 ---@field terminal_colors boolean
@@ -24,7 +23,6 @@ local M = {}
 
 ---@type StealthConfig
 M.defaults = {
-    variant = 'stealth', -- "stealth" (default), "monochrome", "emerald", "cyan", "violet", "amber"
     transparent = false,
     dim_inactive = false,
     terminal_colors = true,
