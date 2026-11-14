@@ -8,27 +8,27 @@ function M.get()
 
     return {
         normal = {
-            a = { fg = inverse_fg, bg = colors.accent, gui = 'bold' },
+            a = { fg = inverse_fg, bg = colors.accent },
             b = { fg = colors.fg, bg = colors.bg_highlight },
             c = { fg = colors.fg_sub, bg = colors.bg_dark },
         },
         insert = {
-            a = { fg = inverse_fg, bg = colors.green, gui = 'bold' },
+            a = { fg = inverse_fg, bg = colors.green },
             b = { fg = colors.fg, bg = colors.bg_highlight },
             c = { fg = colors.fg_sub, bg = colors.bg_dark },
         },
         visual = {
-            a = { fg = inverse_fg, bg = colors.purple, gui = 'bold' },
+            a = { fg = inverse_fg, bg = colors.purple },
             b = { fg = colors.fg, bg = colors.bg_highlight },
             c = { fg = colors.fg_sub, bg = colors.bg_dark },
         },
         replace = {
-            a = { fg = inverse_fg, bg = colors.red, gui = 'bold' },
+            a = { fg = inverse_fg, bg = colors.red },
             b = { fg = colors.fg, bg = colors.bg_highlight },
             c = { fg = colors.fg_sub, bg = colors.bg_dark },
         },
         command = {
-            a = { fg = inverse_fg, bg = colors.amber, gui = 'bold' },
+            a = { fg = inverse_fg, bg = colors.amber },
             b = { fg = colors.fg, bg = colors.bg_highlight },
             c = { fg = colors.fg_sub, bg = colors.bg_dark },
         },

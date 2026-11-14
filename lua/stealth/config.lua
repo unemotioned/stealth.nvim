@@ -27,14 +27,14 @@ M.defaults = {
     dim_inactive = false,
     terminal_colors = true,
     styles = {
-        comments = { italic = true },
-        keywords = { italic = false, bold = true },
-        functions = { italic = false, bold = false },
-        variables = { italic = false },
-        parameters = { italic = true },
-        strings = { italic = false },
-        constants = { bold = true },
-        types = { bold = false },
+        comments = { bold = false, italic = false },
+        keywords = { bold = false, italic = false },
+        functions = { bold = false, italic = false },
+        variables = { bold = false, italic = false },
+        parameters = { bold = false, italic = false },
+        strings = { bold = false, italic = false },
+        constants = { bold = false, italic = false },
+        types = { bold = false, italic = false },
         sidebars = 'auto', -- "auto", "dark", "transparent", or "normal"
         floats = 'auto', -- "auto", "dark", "transparent", or "normal"
     },

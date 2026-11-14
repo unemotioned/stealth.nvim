@@ -9,9 +9,30 @@ print('--> Testing load without setup...')
 vim.cmd.colorscheme('stealth')
 assert(vim.g.colors_name == 'stealth', 'colors_name should be stealth without setup')
 assert(vim.g.terminal_color_0 == '#08090b', 'Default terminal colors should be initialized')
-assert(stealth.highlights()['@variable.parameter'].italic == true, 'Default styles should be initialized')
+assert(not stealth.highlights()['@variable.parameter'].italic, 'Parameters should not be italic by default')
 assert(vim.api.nvim_get_hl(0, { name = 'Title' }).fg == 0xffffff, 'Default accent should be monochrome')
 assert(vim.api.nvim_get_hl(0, { name = 'Number' }).fg == 0xfb923c, 'Default literals should be orange')
+
+print('--> Testing default font styles...')
+for name, style in pairs(require('stealth.config').defaults.styles) do
+    if type(style) == 'table' then
+        assert(style.bold == false and style.italic == false, name .. ' should disable bold and italic by default')
+    end
+end
+for group, definition in pairs(stealth.highlights()) do
+    assert(not definition.bold and not definition.italic, group .. ' should not request bold or italic')
+    local resolved = vim.api.nvim_get_hl(0, { name = group, link = false })
+    assert(not resolved.bold and not resolved.italic, group .. ' should not resolve to bold or italic')
+end
+for group, definition in pairs(vim.api.nvim_get_hl(0, {})) do
+    local cterm = definition.cterm or {}
+    assert(
+        not definition.bold and not definition.italic and not cterm.bold and not cterm.italic,
+        group .. ' should not be bold or italic by default'
+    )
+end
+assert(vim.api.nvim_get_hl(0, { name = '@markup.link' }).underline, 'Link underline should be preserved')
+assert(vim.api.nvim_get_hl(0, { name = 'DiagnosticUnderlineWarn' }).undercurl, 'Diagnostic undercurl should be preserved')
 
 print('--> Testing default setup & load...')
 stealth.setup()
@@ -20,13 +41,13 @@ stealth.load()
 assert(vim.g.colors_name == 'stealth', 'colors_name should be stealth')
 
 local parameter_hl = vim.api.nvim_get_hl(0, { name = '@variable.parameter', link = false })
-assert(parameter_hl.italic == true, 'Parameters should be italic by default')
+assert(not parameter_hl.italic, 'Parameters should not be italic by default')
 
 print('--> Testing include keyword styles...')
 local include_foregrounds = {}
 for _, group in ipairs({ 'Include', '@keyword.import' }) do
     local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
-    assert(hl.bold == true, group .. ' should be bold by default')
+    assert(not hl.bold and not hl.italic, group .. ' should not be bold or italic by default')
     include_foregrounds[group] = hl.fg
 end
 stealth.setup({ styles = { keywords = { bold = false, italic = true } } })
@@ -85,7 +106,9 @@ stealth.setup({
     on_highlights = function(hl)
         hl['@string.regexp'].fg = '#123456'
         hl['@number.float'].fg = '#234567'
+        hl['@markup.strong'].bold = true
         hl['@markup.strong'].italic = true
+        hl['@markup.italic'].italic = true
     end,
 })
 stealth.load()
@@ -99,6 +122,39 @@ for _, group in ipairs({ '@markup.strong', '@markup.bold' }) do
     local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
     assert(hl.bold and hl.italic, group .. ' should use strong markup styling')
 end
+assert(vim.api.nvim_get_hl(0, { name = '@markup.italic' }).italic, 'Markup italics should be customizable')
+
+print('--> Testing explicit font style opt-ins...')
+local styled_groups = {
+    comments = { 'Comment', '@comment', '@comment.documentation', '@lsp.type.comment' },
+    keywords = { 'Keyword', 'Include', '@keyword', '@keyword.import' },
+    functions = { 'Function', '@function', '@function.builtin', '@lsp.type.function' },
+    variables = { 'Identifier', '@variable', '@variable.builtin', '@lsp.type.variable' },
+    parameters = { '@variable.parameter', '@lsp.type.parameter' },
+    strings = { 'String', '@string', '@string.escape', '@string.regexp' },
+    constants = { 'Constant', '@constant', '@constant.builtin', '@lsp.type.enumMember' },
+    types = { 'Type', '@type', '@type.builtin', '@lsp.type.type' },
+}
+local opted_in_styles = {}
+for style in pairs(styled_groups) do
+    opted_in_styles[style] = { bold = true, italic = true }
+end
+stealth.setup({
+    styles = opted_in_styles,
+    on_highlights = function(highlights)
+        highlights.WarningMsg.bold = true
+        highlights.LspInlayHint.italic = true
+    end,
+})
+stealth.load()
+for style, groups in pairs(styled_groups) do
+    for _, group in ipairs(groups) do
+        local styled = vim.api.nvim_get_hl(0, { name = group, link = false })
+        assert(styled.bold and styled.italic, group .. ' should honor the ' .. style .. ' style opt-in')
+    end
+end
+assert(vim.api.nvim_get_hl(0, { name = 'WarningMsg' }).bold, 'User hooks should be able to enable bold')
+assert(vim.api.nvim_get_hl(0, { name = 'LspInlayHint' }).italic, 'User hooks should be able to enable italic')
 
 print('--> Testing the default monochrome palette...')
 stealth.setup()
@@ -191,7 +247,7 @@ assert(
 )
 for _, group in ipairs({ 'Todo', '@comment.todo', '@comment.warning' }) do
     local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
-    assert(hl.fg == 0x0e1013 and hl.bg == 0xfbbf24 and hl.bold, group .. ' should use the warning color')
+    assert(hl.fg == 0x0e1013 and hl.bg == 0xfbbf24 and not hl.bold, group .. ' should use the warning color')
 end
 assert(vim.api.nvim_get_hl(0, { name = 'IncSearch' }).bg == 0xd4d4d8, 'Search should retain its original color')
 
@@ -290,7 +346,7 @@ local lualine_theme = stealth.lualine()
 assert(lualine_theme.normal.a.bg == '#ffffff', 'Lualine should use the monochrome palette')
 assert(lualine_theme.normal.a.fg == '#0e1013', 'Lualine should retain a solid foreground')
 for _, mode in ipairs({ 'normal', 'insert', 'visual', 'replace', 'command' }) do
-    assert(lualine_theme[mode].a.gui == 'bold', 'Lualine ' .. mode .. ' mode should use its bold style')
+    assert(lualine_theme[mode].a.gui == nil, 'Lualine ' .. mode .. ' mode should not use bold or italic')
 end
 local lualine_files = vim.api.nvim_get_runtime_file('lua/lualine/themes/stealth.lua', false)
 assert(#lualine_files == 1, 'Lualine should be able to discover the stealth theme')
@@ -498,7 +554,7 @@ for _, level in ipairs({ 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE' }) do
         assert(notify_hl[prefix .. section] ~= nil, prefix .. section .. ' should be defined')
     end
     assert(notify_hl[prefix .. 'Border'].fg == notify_hl[prefix .. 'Icon'].fg, prefix .. ' colors should match')
-    assert(notify_hl[prefix .. 'Title'].bold, prefix .. ' title should be bold')
+    assert(not notify_hl[prefix .. 'Title'].bold, prefix .. ' title should not be bold')
 end
 stealth.setup({ plugins = { notify = false } })
 local no_notify = stealth.highlights()
@@ -508,7 +564,51 @@ for _, level in ipairs({ 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE' }) do
     end
 end
 
+print('--> Testing Markdown and HTML syntax font styles...')
+local function assert_plain_markup()
+    for _, group in ipairs({
+        'htmlBold', 'htmlItalic', 'htmlBoldItalic',
+        'htmlBoldUnderline', 'htmlBoldUnderlineItalic', 'htmlUnderlineItalic',
+        'markdownBold', 'markdownItalic', 'markdownBoldItalic',
+    }) do
+        local resolved = vim.api.nvim_get_hl(0, { name = group, link = false })
+        local cterm = resolved.cterm or {}
+        assert(
+            not resolved.bold and not resolved.italic and not cterm.bold and not cterm.italic,
+            group .. ' should not be bold or italic by default'
+        )
+    end
+    for _, group in ipairs({ 'htmlBoldUnderline', 'htmlBoldUnderlineItalic', 'htmlUnderlineItalic' }) do
+        assert(vim.api.nvim_get_hl(0, { name = group }).underline, group .. ' should retain its underline')
+    end
+end
+
+vim.cmd('syntax off')
+stealth.setup()
+vim.cmd.colorscheme('stealth')
+vim.cmd('syntax on')
+vim.bo.filetype = 'markdown'
+assert(vim.b.current_syntax == 'markdown', 'Markdown syntax should be loaded')
+assert_plain_markup()
+vim.cmd.colorscheme('stealth')
+assert_plain_markup()
+stealth.setup({ plugins = { treesitter = false } })
+vim.cmd.colorscheme('stealth')
+assert_plain_markup()
+stealth.setup({
+    on_highlights = function(highlights)
+        highlights.htmlBold = { bold = true }
+        highlights['@markup.strong'].bold = true
+    end,
+})
+vim.cmd.colorscheme('stealth')
+assert(vim.api.nvim_get_hl(0, { name = 'markdownBold', link = false }).bold, 'Vim markup should allow bold opt-ins')
+assert(vim.api.nvim_get_hl(0, { name = '@markup.strong' }).bold, 'Treesitter markup should allow bold opt-ins')
+vim.bo.filetype = ''
+vim.cmd('syntax off')
+
 print('--> Testing syntax reset only when syntax is enabled...')
+stealth.setup()
 vim.cmd('syntax off')
 vim.g.colors_name = nil
 vim.api.nvim_set_hl(0, 'StatusLineTerm', { fg = '#123456' })

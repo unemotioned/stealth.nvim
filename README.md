@@ -42,12 +42,7 @@ For the default settings, `:colorscheme stealth` also works without calling
   "LucFerrei/stealth.nvim",
   lazy = false,
   priority = 1000,
-  opts = {
-    styles = {
-      comments = { italic = true },
-      keywords = { bold = true },
-    },
-  },
+  opts = {},
   config = function(_, opts)
     require("stealth").setup(opts)
     vim.cmd.colorscheme("stealth")
@@ -98,14 +93,14 @@ require("stealth").setup({
 
   -- Personalized syntax styles
   styles = {
-    comments = { italic = true },
-    keywords = { bold = true, italic = false },
+    comments = { bold = false, italic = false },
+    keywords = { bold = false, italic = false },
     functions = { bold = false, italic = false },
-    variables = { italic = false },
-    parameters = { italic = true },
-    strings = { italic = false },
-    constants = { bold = true },
-    types = { bold = false },
+    variables = { bold = false, italic = false },
+    parameters = { bold = false, italic = false },
+    strings = { bold = false, italic = false },
+    constants = { bold = false, italic = false },
+    types = { bold = false, italic = false },
     sidebars = "auto", -- "auto", "dark", "transparent", or "normal"
     floats = "auto",   -- "auto", "dark", "transparent", or "normal"
   },
@@ -127,13 +122,17 @@ require("stealth").setup({
 
   -- Override highlight groups
   on_highlights = function(highlights, colors)
-    highlights.Comment = { fg = colors.comment, italic = true }
-    highlights.Function = { fg = colors.green, bold = true }
+    highlights.Comment = { fg = colors.comment }
+    highlights.Function = { fg = colors.green }
   end,
 })
 
 vim.cmd.colorscheme("stealth")
 ```
+
+Bold and italic are disabled by default, including for Markdown emphasis and
+themed plugin highlights. Set a syntax style to `true` or use `on_highlights`
+to enable either style for specific groups.
 
 With `"auto"`, sidebars and supported floating windows follow `transparent`:
 they use their dark backgrounds by default and become transparent when it is

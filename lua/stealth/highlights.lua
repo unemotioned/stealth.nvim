@@ -8,13 +8,13 @@ function M.setup(colors, config)
     config = config or require('stealth.config').options
     local styles = config.styles or {}
 
-    local comment_style = styles.comments or { italic = true }
-    local keyword_style = styles.keywords or { bold = true }
+    local comment_style = styles.comments or {}
+    local keyword_style = styles.keywords or {}
     local function_style = styles.functions or {}
     local variable_style = styles.variables or {}
-    local parameter_style = styles.parameters or { italic = true }
+    local parameter_style = styles.parameters or {}
     local string_style = styles.strings or {}
-    local constant_style = styles.constants or { bold = true }
+    local constant_style = styles.constants or {}
     local type_style = styles.types or {}
     local inverse_fg = colors.bg == colors.none and colors.bg_base or colors.bg
 
@@ -41,7 +41,7 @@ function M.setup(colors, config)
             fg = colors.border_highlight,
             bg = float_bg,
         },
-        FloatTitle = { fg = colors.accent, bg = float_bg, bold = true },
+        FloatTitle = { fg = colors.accent, bg = float_bg },
         FloatFooter = { fg = colors.fg_sub, bg = float_bg },
 
         ColorColumn = { bg = colors.bg_line },
@@ -51,35 +51,37 @@ function M.setup(colors, config)
         CursorIM = { fg = inverse_fg, bg = colors.main },
         CursorColumn = { bg = colors.bg_line },
         CursorLine = { bg = colors.bg_line },
-        Directory = { fg = colors.cyan, bold = true },
+        Directory = { fg = colors.cyan },
         DiffAdd = { bg = colors.diff_add },
         DiffChange = { bg = colors.diff_change },
         DiffDelete = { bg = colors.diff_delete },
         DiffText = { bg = colors.diff_text },
         EndOfBuffer = { fg = inverse_fg },
-        ErrorMsg = { fg = colors.red, bold = true },
+        ErrorMsg = { fg = colors.red },
         WinSeparator = { fg = colors.win_separator },
         VertSplit = { fg = colors.win_separator },
         Folded = { fg = colors.fg_sub, bg = colors.bg_highlight },
         FoldColumn = { fg = colors.fg_gutter, bg = colors.bg },
         SignColumn = { fg = colors.fg_gutter, bg = colors.bg },
-        IncSearch = { fg = inverse_fg, bg = colors.amber, bold = true },
-        CurSearch = { fg = inverse_fg, bg = colors.amber, bold = true },
+        IncSearch = { fg = inverse_fg, bg = colors.amber },
+        CurSearch = { fg = inverse_fg, bg = colors.amber },
         Search = { fg = colors.fg, bg = colors.bg_search },
-        Substitute = { fg = inverse_fg, bg = colors.red, bold = true },
+        Substitute = { fg = inverse_fg, bg = colors.red },
         LineNr = { fg = colors.fg_gutter },
-        CursorLineNr = { fg = colors.fg, bold = true },
-        MatchParen = { fg = colors.orange, bg = colors.bg_visual, bold = true },
-        ModeMsg = { fg = colors.fg, bold = true },
+        CursorLineNr = { fg = colors.fg },
+        MatchParen = { fg = colors.orange, bg = colors.bg_visual },
+        ModeMsg = { fg = colors.fg },
         MsgArea = { fg = colors.fg },
         MoreMsg = { fg = colors.cyan },
         NonText = { fg = colors.fg_gutter },
         Pmenu = { fg = colors.fg, bg = colors.bg_popup },
-        PmenuSel = { fg = colors.main, bg = colors.bg_visual, bold = true },
+        PmenuSel = { fg = colors.main, bg = colors.bg_visual },
+        PmenuMatch = {},
+        PmenuMatchSel = {},
         PmenuSbar = { bg = colors.bg_highlight },
         PmenuThumb = { bg = colors.border_highlight },
         Question = { fg = colors.cyan },
-        QuickFixLine = { bg = colors.bg_visual, bold = true },
+        QuickFixLine = { bg = colors.bg_visual },
         SpecialKey = { fg = colors.fg_gutter },
         SpellBad = { sp = colors.red, undercurl = true },
         SpellCap = { sp = colors.amber, undercurl = true },
@@ -89,14 +91,14 @@ function M.setup(colors, config)
         StatusLineNC = { fg = colors.fg_sub, bg = colors.bg_dark },
         TabLine = { fg = colors.fg_sub, bg = colors.bg_dark },
         TabLineFill = { bg = colors.bg_dark },
-        TabLineSel = { fg = colors.main, bg = colors.bg, bold = true },
-        Title = { fg = colors.accent, bold = true },
+        TabLineSel = { fg = colors.main, bg = colors.bg },
+        Title = { fg = colors.accent },
         Visual = { bg = colors.bg_visual },
         VisualNOS = { bg = colors.bg_visual },
-        WarningMsg = { fg = colors.diag_warn, bold = true },
+        WarningMsg = { fg = colors.diag_warn },
         Whitespace = { fg = colors.fg_dim },
-        WildMenu = { fg = inverse_fg, bg = colors.cyan, bold = true },
-        WinBar = { fg = colors.fg, bg = colors.bg_dark, bold = true },
+        WildMenu = { fg = inverse_fg, bg = colors.cyan },
+        WinBar = { fg = colors.fg, bg = colors.bg_dark },
         WinBarNC = { fg = colors.fg_sub, bg = colors.bg_dark },
 
         -- ===================================================================
@@ -107,7 +109,7 @@ function M.setup(colors, config)
         String = vim.tbl_extend('force', { fg = colors.green }, string_style),
         Character = { fg = colors.teal },
         Number = { fg = colors.orange },
-        Boolean = { fg = colors.orange, bold = true },
+        Boolean = { fg = colors.orange },
         Float = { fg = colors.orange },
 
         Identifier = vim.tbl_extend('force', { fg = colors.fg }, variable_style),
@@ -139,10 +141,19 @@ function M.setup(colors, config)
         SpecialComment = vim.tbl_extend('force', { fg = colors.cyan }, comment_style),
         Debug = { fg = colors.orange },
 
+        -- Vim's Markdown syntax links its emphasis groups to these HTML groups.
+        StealthPlain = {},
+        htmlBold = { link = 'StealthPlain' },
+        htmlItalic = { link = 'StealthPlain' },
+        htmlBoldItalic = { link = 'StealthPlain' },
+        htmlBoldUnderline = { underline = true },
+        htmlBoldUnderlineItalic = { underline = true },
+        htmlUnderlineItalic = { underline = true },
+
         Underlined = { underline = true },
         Ignore = { fg = colors.fg_dim },
-        Error = { fg = colors.red, bold = true },
-        Todo = { fg = inverse_fg, bg = colors.diag_warn, bold = true },
+        Error = { fg = colors.red },
+        Todo = { fg = inverse_fg, bg = colors.diag_warn },
         Added = { fg = colors.git_add },
         Changed = { fg = colors.git_change },
         Removed = { fg = colors.git_delete },
@@ -151,11 +162,11 @@ function M.setup(colors, config)
         -- Treesitter Highlights
         -- ===================================================================
         ['@comment'] = vim.tbl_extend('force', { fg = colors.comment }, comment_style),
-        ['@comment.documentation'] = vim.tbl_extend('force', { fg = colors.comment, bold = true }, comment_style),
-        ['@comment.note'] = { fg = inverse_fg, bg = colors.cyan, bold = true },
-        ['@comment.todo'] = { fg = inverse_fg, bg = colors.diag_warn, bold = true },
-        ['@comment.warning'] = { fg = inverse_fg, bg = colors.diag_warn, bold = true },
-        ['@comment.error'] = { fg = inverse_fg, bg = colors.red, bold = true },
+        ['@comment.documentation'] = vim.tbl_extend('force', { fg = colors.comment }, comment_style),
+        ['@comment.note'] = { fg = inverse_fg, bg = colors.cyan },
+        ['@comment.todo'] = { fg = inverse_fg, bg = colors.diag_warn },
+        ['@comment.warning'] = { fg = inverse_fg, bg = colors.diag_warn },
+        ['@comment.error'] = { fg = inverse_fg, bg = colors.red },
 
         ['@keyword'] = vim.tbl_extend('force', { fg = colors.indigo }, keyword_style),
         ['@keyword.coroutine'] = vim.tbl_extend('force', { fg = colors.indigo }, keyword_style),
@@ -193,10 +204,10 @@ function M.setup(colors, config)
         ['@string'] = vim.tbl_extend('force', { fg = colors.green }, string_style),
         ['@string.regexp'] = vim.tbl_extend('force', { fg = colors.teal }, string_style),
         ['@string.regex'] = { link = '@string.regexp' },
-        ['@string.escape'] = vim.tbl_extend('force', { fg = colors.teal, bold = true }, string_style),
+        ['@string.escape'] = vim.tbl_extend('force', { fg = colors.teal }, string_style),
         ['@character'] = { fg = colors.teal },
         ['@number'] = { fg = colors.orange },
-        ['@boolean'] = { fg = colors.orange, bold = true },
+        ['@boolean'] = { fg = colors.orange },
         ['@number.float'] = { fg = colors.orange },
         ['@float'] = { link = '@number.float' },
 
@@ -215,10 +226,10 @@ function M.setup(colors, config)
         ['@tag.attribute'] = { fg = colors.cyan },
         ['@tag.delimiter'] = { fg = colors.fg_sub },
 
-        ['@markup.heading'] = { fg = colors.accent, bold = true },
+        ['@markup.heading'] = { fg = colors.accent },
         ['@markup.raw'] = { fg = colors.green },
-        ['@markup.italic'] = { italic = true },
-        ['@markup.strong'] = { bold = true },
+        ['@markup.italic'] = {},
+        ['@markup.strong'] = {},
         ['@markup.bold'] = { link = '@markup.strong' },
         ['@markup.list'] = { fg = colors.cyan },
         ['@markup.link'] = { fg = colors.cyan, underline = true },
@@ -251,8 +262,8 @@ function M.setup(colors, config)
         LspReferenceWrite = { bg = colors.bg_visual },
         LspReferenceTarget = { bg = colors.bg_visual },
         LspCodeLens = { fg = colors.fg_sub },
-        LspInlayHint = { fg = colors.comment, italic = true },
-        LspSignatureActiveParameter = { fg = colors.accent, bold = true, underline = true },
+        LspInlayHint = { fg = colors.comment },
+        LspSignatureActiveParameter = { fg = colors.accent, underline = true },
 
         -- Semantic Tokens
         ['@lsp.type.class'] = { link = '@type' },
@@ -283,12 +294,12 @@ function M.setup(colors, config)
         TelescopeBorder = { fg = colors.border_highlight, bg = float_bg },
         TelescopePromptNormal = { fg = colors.fg, bg = prompt_bg },
         TelescopePromptBorder = { fg = colors.border_highlight, bg = prompt_bg },
-        TelescopePromptTitle = { fg = inverse_fg, bg = colors.accent, bold = true },
-        TelescopePreviewTitle = { fg = inverse_fg, bg = colors.green, bold = true },
-        TelescopeResultsTitle = { fg = inverse_fg, bg = colors.cyan, bold = true },
-        TelescopeSelection = { fg = colors.main, bg = colors.bg_visual, bold = true },
-        TelescopeSelectionCaret = { fg = colors.accent, bold = true },
-        TelescopeMatching = { fg = colors.amber, bold = true },
+        TelescopePromptTitle = { fg = inverse_fg, bg = colors.accent },
+        TelescopePreviewTitle = { fg = inverse_fg, bg = colors.green },
+        TelescopeResultsTitle = { fg = inverse_fg, bg = colors.cyan },
+        TelescopeSelection = { fg = colors.main, bg = colors.bg_visual },
+        TelescopeSelectionCaret = { fg = colors.accent },
+        TelescopeMatching = { fg = colors.amber },
 
         -- NvimTree / NeoTree
         NvimTreeNormal = {
@@ -299,10 +310,10 @@ function M.setup(colors, config)
             fg = colors.fg,
             bg = sidebar_bg,
         },
-        NvimTreeRootFolder = { fg = colors.accent, bold = true },
+        NvimTreeRootFolder = { fg = colors.accent },
         NvimTreeFolderIcon = { fg = colors.cyan },
         NvimTreeFolderName = { fg = colors.fg },
-        NvimTreeOpenedFolderName = { fg = colors.cyan, bold = true },
+        NvimTreeOpenedFolderName = { fg = colors.cyan },
         NvimTreeEmptyFolderName = { fg = colors.fg_sub },
         NvimTreeGitDirty = { fg = colors.git_dirty },
         NvimTreeGitNew = { fg = colors.git_add },
@@ -316,7 +327,7 @@ function M.setup(colors, config)
             fg = colors.fg,
             bg = sidebar_bg,
         },
-        NeoTreeRootName = { fg = colors.accent, bold = true },
+        NeoTreeRootName = { fg = colors.accent },
         NeoTreeDirectoryName = { fg = colors.fg },
         NeoTreeDirectoryIcon = { fg = colors.cyan },
         NeoTreeGitAdded = { fg = colors.git_add },
@@ -352,8 +363,8 @@ function M.setup(colors, config)
         OilTrashSourcePath = { fg = colors.fg_sub },
 
         -- WhichKey
-        WhichKey = { fg = colors.cyan, bold = true },
-        WhichKeyGroup = { fg = colors.purple, bold = true },
+        WhichKey = { fg = colors.cyan },
+        WhichKeyGroup = { fg = colors.purple },
         WhichKeyDesc = { fg = colors.fg },
         WhichKeyIcon = { fg = colors.green },
         WhichKeyBorder = { fg = colors.border_highlight, bg = float_bg },
@@ -363,23 +374,23 @@ function M.setup(colors, config)
         GitSignsAdd = { fg = colors.git_add },
         GitSignsChange = { fg = colors.git_change },
         GitSignsDelete = { fg = colors.git_delete },
-        GitSignsCurrentLineBlame = { fg = colors.fg_sub, italic = true },
+        GitSignsCurrentLineBlame = { fg = colors.fg_sub },
 
         -- Nvim-Cmp / Blink.cmp
         CmpItemAbbr = { fg = colors.fg },
         CmpItemAbbrDeprecated = { fg = colors.fg_sub, strikethrough = true },
-        CmpItemAbbrMatch = { fg = colors.accent, bold = true },
-        CmpItemAbbrMatchFuzzy = { fg = colors.accent, bold = true },
+        CmpItemAbbrMatch = { fg = colors.accent },
+        CmpItemAbbrMatchFuzzy = { fg = colors.accent },
         CmpItemMenu = { fg = colors.fg_sub },
         CmpItemKind = { fg = colors.fg_sub },
 
         BlinkCmpLabel = { fg = colors.fg },
         BlinkCmpLabelDeprecated = { fg = colors.fg_sub, strikethrough = true },
-        BlinkCmpLabelMatch = { fg = colors.accent, bold = true },
+        BlinkCmpLabelMatch = { fg = colors.accent },
         BlinkCmpLabelDetail = { fg = colors.fg_sub },
         BlinkCmpLabelDescription = { fg = colors.fg_sub },
         BlinkCmpSource = { fg = colors.fg_sub },
-        BlinkCmpGhostText = { fg = colors.comment, italic = true },
+        BlinkCmpGhostText = { fg = colors.comment },
         BlinkCmpMenuBorder = { fg = colors.border_highlight, bg = colors.bg_popup },
         BlinkCmpDocBorder = { fg = colors.border_highlight, bg = float_bg },
         BlinkCmpSignatureHelpBorder = { fg = colors.border_highlight, bg = float_bg },
@@ -392,12 +403,12 @@ function M.setup(colors, config)
         IndentBlanklineContextChar = { fg = colors.border_highlight },
 
         -- Mini.nvim
-        MiniStatuslineModeNormal = { fg = inverse_fg, bg = colors.accent, bold = true },
-        MiniStatuslineModeInsert = { fg = inverse_fg, bg = colors.green, bold = true },
-        MiniStatuslineModeVisual = { fg = inverse_fg, bg = colors.purple, bold = true },
-        MiniStatuslineModeReplace = { fg = inverse_fg, bg = colors.red, bold = true },
-        MiniStatuslineModeCommand = { fg = inverse_fg, bg = colors.amber, bold = true },
-        MiniStatuslineModeOther = { fg = inverse_fg, bg = colors.cyan, bold = true },
+        MiniStatuslineModeNormal = { fg = inverse_fg, bg = colors.accent },
+        MiniStatuslineModeInsert = { fg = inverse_fg, bg = colors.green },
+        MiniStatuslineModeVisual = { fg = inverse_fg, bg = colors.purple },
+        MiniStatuslineModeReplace = { fg = inverse_fg, bg = colors.red },
+        MiniStatuslineModeCommand = { fg = inverse_fg, bg = colors.amber },
+        MiniStatuslineModeOther = { fg = inverse_fg, bg = colors.cyan },
         MiniStatuslineDevinfo = { link = 'StatusLine' },
         MiniStatuslineFilename = { link = 'StatusLineNC' },
         MiniStatuslineFileinfo = { link = 'StatusLine' },
@@ -410,25 +421,25 @@ function M.setup(colors, config)
         MiniPickCursor = { blend = 100, nocombine = true },
         MiniPickIconDirectory = { fg = colors.cyan },
         MiniPickIconFile = { fg = colors.fg_sub },
-        MiniPickHeader = { fg = colors.accent, bold = true },
+        MiniPickHeader = { fg = colors.accent },
         MiniPickMatchCurrent = { bg = colors.bg_visual },
-        MiniPickMatchMarked = { fg = colors.amber, bold = true },
-        MiniPickMatchRanges = { fg = colors.amber, bold = true },
+        MiniPickMatchMarked = { fg = colors.amber },
+        MiniPickMatchRanges = { fg = colors.amber },
         MiniPickPreviewLine = { bg = colors.bg_line },
         MiniPickPreviewRegion = { bg = colors.bg_visual },
         MiniPickPrompt = { fg = colors.fg },
         MiniPickPromptCaret = { fg = colors.accent },
-        MiniPickPromptPrefix = { fg = colors.accent, bold = true },
+        MiniPickPromptPrefix = { fg = colors.accent },
 
-        MiniStarterCurrent = { fg = colors.main, bold = true },
-        MiniStarterFooter = { fg = colors.fg_sub, italic = true },
-        MiniStarterHeader = { fg = colors.accent, bold = true },
+        MiniStarterCurrent = { fg = colors.main },
+        MiniStarterFooter = { fg = colors.fg_sub },
+        MiniStarterHeader = { fg = colors.accent },
         MiniStarterInactive = { fg = colors.comment },
         MiniStarterItem = { fg = colors.fg },
         MiniStarterItemBullet = { fg = colors.cyan },
-        MiniStarterItemPrefix = { fg = colors.amber, bold = true },
-        MiniStarterSection = { fg = colors.cyan, bold = true },
-        MiniStarterQuery = { fg = colors.green, bold = true },
+        MiniStarterItemPrefix = { fg = colors.amber },
+        MiniStarterSection = { fg = colors.cyan },
+        MiniStarterQuery = { fg = colors.green },
 
         MiniFilesBorder = { link = 'FloatBorder' },
         MiniFilesBorderModified = { fg = colors.diag_warn, bg = float_bg },
@@ -437,22 +448,22 @@ function M.setup(colors, config)
         MiniFilesFile = { fg = colors.fg },
         MiniFilesNormal = { link = 'NormalFloat' },
         MiniFilesTitle = { link = 'FloatTitle' },
-        MiniFilesTitleFocused = { fg = colors.accent, bg = float_bg, bold = true },
+        MiniFilesTitleFocused = { fg = colors.accent, bg = float_bg },
 
         -- Trouble
         TroubleNormal = { fg = colors.fg, bg = float_bg },
         TroubleText = { fg = colors.fg },
-        TroubleCount = { fg = colors.purple, bold = true },
+        TroubleCount = { fg = colors.purple },
         TroubleSignError = { fg = colors.diag_error },
         TroubleSignWarning = { fg = colors.diag_warn },
 
         -- Dashboard / Alpha
-        DashboardHeader = { fg = colors.accent, bold = true },
+        DashboardHeader = { fg = colors.accent },
         DashboardCenter = { fg = colors.cyan },
-        DashboardFooter = { fg = colors.fg_sub, italic = true },
-        AlphaHeader = { fg = colors.accent, bold = true },
+        DashboardFooter = { fg = colors.fg_sub },
+        AlphaHeader = { fg = colors.accent },
         AlphaButtons = { fg = colors.cyan },
-        AlphaFooter = { fg = colors.fg_sub, italic = true },
+        AlphaFooter = { fg = colors.fg_sub },
 
         -- Noice / Notify
         NoiceCmdline = { fg = colors.fg },
@@ -470,7 +481,7 @@ function M.setup(colors, config)
     for level, color in pairs(notify_levels) do
         hl['Notify' .. level .. 'Border'] = { fg = color }
         hl['Notify' .. level .. 'Icon'] = { fg = color }
-        hl['Notify' .. level .. 'Title'] = { fg = color, bold = true }
+        hl['Notify' .. level .. 'Title'] = { fg = color }
         hl['Notify' .. level .. 'Body'] = { fg = colors.fg }
     end
 

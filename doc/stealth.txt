@@ -60,14 +60,14 @@ Stealth supports detailed customization options passed into `setup()`:
 
       -- Personalized font styles for syntax tokens
       styles = {
-        comments = { italic = true },
-        keywords = { bold = true, italic = false },
+        comments = { bold = false, italic = false },
+        keywords = { bold = false, italic = false },
         functions = { bold = false, italic = false },
-        variables = { italic = false },
-        parameters = { italic = true },
-        strings = { italic = false },
-        constants = { bold = true },
-        types = { bold = false },
+        variables = { bold = false, italic = false },
+        parameters = { bold = false, italic = false },
+        strings = { bold = false, italic = false },
+        constants = { bold = false, italic = false },
+        types = { bold = false, italic = false },
         sidebars = "auto", -- "auto", "dark", "transparent", "normal"
         floats = "auto",   -- "auto", "dark", "transparent", "normal"
       },
@@ -89,10 +89,14 @@ Stealth supports detailed customization options passed into `setup()`:
 
       -- Custom highlight hook
       on_highlights = function(highlights, colors)
-        highlights.Comment = { fg = colors.comment, italic = true }
+        highlights.Comment = { fg = colors.comment }
       end,
     })
     <
+
+Bold and italic are disabled by default, including for Markdown emphasis and
+themed plugin highlights. Use styles or on_highlights to enable them for
+specific groups.
 
 The monochrome palette uses orange literals, yellow warnings and TODOs, and
 red errors. The former variant option no longer selects a palette and can be
