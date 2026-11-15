@@ -167,6 +167,10 @@ the plugin or its own default highlights. The `lsp`, `semantic_tokens`, and
 `treesitter` flags can be controlled independently. User `on_highlights`
 overrides run after this filtering.
 
+Integration highlights are organized by plugin in `lua/stealth/integrations/`;
+the directory also contains the separate Tree-sitter, LSP, and semantic-token
+modules. Lualine has its own theme module.
+
 ---
 
 ## 🎨 Palette

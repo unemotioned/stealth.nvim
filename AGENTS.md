@@ -11,6 +11,7 @@
 - Default options are initialized when the configuration module loads, so `:colorscheme stealth` works without `setup()`. Each `setup()` merges against defaults, not previous options, and does not apply highlights.
 - The load pipeline is palette/transparency → `on_colors` → highlight table → `on_highlights` → `nvim_set_hl` → optional terminal colors. Keep user hooks after built-in overrides. `colors()` and `highlights()` regenerate tables and rerun the relevant hooks.
 - Theme-defined highlights and Lualine styles are neither bold nor italic by default. Preserve explicit syntax style and `on_highlights` opt-ins.
-- Plugin highlights live in the single table in `lua/stealth/highlights.lua`. The `plugins` flags omit Stealth's definitions, not a plugin's own defaults; filtering runs before `on_highlights`.
+- Integration highlights live in `lua/stealth/integrations/<name>.lua`, with enabled modules registered in `lua/stealth/integrations/init.lua`. Each module returns its highlights from `get(colors, context)`; the `plugins` flags omit Stealth's definitions, not a plugin's own defaults. Merge integrations before `on_highlights`.
+- The integration context supplies syntax styles and resolved inverse, float, sidebar, and prompt colors. The shared completion-kind colors live in `lua/stealth/integrations/completion.lua`.
 - Sidebar and float styles default to `"auto"`, which follows global `transparent`. Explicit `"dark"`, `"normal"`, and `"transparent"` styles override that behavior; completion menus and colored title labels retain their backgrounds.
 - Lualine is available through `require("stealth").lualine()` and the `lua/lualine/themes/stealth.lua` discovery module. Lualine style attributes use `gui`, not Neovim's `bold` boolean.

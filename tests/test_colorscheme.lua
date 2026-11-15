@@ -32,7 +32,10 @@ for group, definition in pairs(vim.api.nvim_get_hl(0, {})) do
     )
 end
 assert(vim.api.nvim_get_hl(0, { name = '@markup.link' }).underline, 'Link underline should be preserved')
-assert(vim.api.nvim_get_hl(0, { name = 'DiagnosticUnderlineWarn' }).undercurl, 'Diagnostic undercurl should be preserved')
+assert(
+    vim.api.nvim_get_hl(0, { name = 'DiagnosticUnderlineWarn' }).undercurl,
+    'Diagnostic undercurl should be preserved'
+)
 
 print('--> Testing default setup & load...')
 stealth.setup()
@@ -95,7 +98,14 @@ for _, group in ipairs({
     assert(hl.italic and not hl.bold, group .. ' should honor keyword styles')
 end
 assert(vim.api.nvim_get_hl(0, { name = '@function.macro' }).bold, 'Function macros should honor function styles')
-for _, group in ipairs({ '@variable.member', '@property', '@field', '@string.regexp', '@string.regex', '@string.escape' }) do
+for _, group in ipairs({
+    '@variable.member',
+    '@property',
+    '@field',
+    '@string.regexp',
+    '@string.regex',
+    '@string.escape',
+}) do
     assert(vim.api.nvim_get_hl(0, { name = group, link = false }).italic, group .. ' should honor its configured style')
 end
 local constant_macro = vim.api.nvim_get_hl(0, { name = '@constant.macro' })
@@ -219,7 +229,10 @@ assert(monochrome_hl.Normal.bg == '#0e1013', 'Normal background should use the o
 assert(monochrome_hl['@type'].fg == '#e2e8f0', 'Types should use the original slate white')
 assert(monochrome_hl.Number.fg == monochrome.orange, 'Numbers should use the monochrome palette')
 assert(monochrome_hl.DiffChange.bg == monochrome.diff_change, 'Diff backgrounds should use the palette')
-assert(monochrome_hl.DiagnosticVirtualTextInfo.bg == monochrome.diag_bg_info, 'Diagnostic backgrounds should use the palette')
+assert(
+    monochrome_hl.DiagnosticVirtualTextInfo.bg == monochrome.diag_bg_info,
+    'Diagnostic backgrounds should use the palette'
+)
 stealth.setup({ variant = 'emerald' })
 assert(vim.deep_equal(stealth.colors(), monochrome), 'The retired variant option should not change the palette')
 
@@ -263,8 +276,15 @@ end
 
 print('--> Testing orange literal highlights...')
 local literal_groups = {
-    'Number', 'Float', 'Boolean', '@number', '@number.float', '@float', '@boolean',
-    '@constant.builtin', '@lsp.type.number',
+    'Number',
+    'Float',
+    'Boolean',
+    '@number',
+    '@number.float',
+    '@float',
+    '@boolean',
+    '@constant.builtin',
+    '@lsp.type.number',
 }
 stealth.setup()
 stealth.load()
@@ -465,9 +485,31 @@ stealth.load()
 local deprecated = vim.api.nvim_get_hl(0, { name = 'BlinkCmpLabelDeprecated' })
 assert(deprecated.strikethrough, 'Blink deprecated completions should be struck through')
 local completion_kinds = {
-    'Text', 'Method', 'Function', 'Constructor', 'Field', 'Variable', 'Class', 'Interface', 'Module',
-    'Property', 'Unit', 'Value', 'Enum', 'Keyword', 'Snippet', 'Color', 'File', 'Reference', 'Folder',
-    'EnumMember', 'Constant', 'Struct', 'Event', 'Operator', 'TypeParameter',
+    'Text',
+    'Method',
+    'Function',
+    'Constructor',
+    'Field',
+    'Variable',
+    'Class',
+    'Interface',
+    'Module',
+    'Property',
+    'Unit',
+    'Value',
+    'Enum',
+    'Keyword',
+    'Snippet',
+    'Color',
+    'File',
+    'Reference',
+    'Folder',
+    'EnumMember',
+    'Constant',
+    'Struct',
+    'Event',
+    'Operator',
+    'TypeParameter',
 }
 for _, kind in ipairs(completion_kinds) do
     local cmp = vim.api.nvim_get_hl(0, { name = 'CmpItemKind' .. kind })
@@ -488,17 +530,49 @@ print('--> Testing Mini.nvim highlights...')
 stealth.setup({ transparent = true })
 local mini_hl = stealth.highlights()
 local mini_groups = {
-    'MiniStatuslineModeNormal', 'MiniStatuslineModeInsert', 'MiniStatuslineModeVisual',
-    'MiniStatuslineModeReplace', 'MiniStatuslineModeCommand', 'MiniStatuslineModeOther',
-    'MiniStatuslineDevinfo', 'MiniStatuslineFilename', 'MiniStatuslineFileinfo', 'MiniStatuslineInactive',
-    'MiniPickNormal', 'MiniPickBorder', 'MiniPickBorderBusy', 'MiniPickBorderText', 'MiniPickCursor',
-    'MiniPickIconDirectory', 'MiniPickIconFile', 'MiniPickHeader', 'MiniPickMatchCurrent',
-    'MiniPickMatchMarked', 'MiniPickMatchRanges', 'MiniPickPreviewLine', 'MiniPickPreviewRegion',
-    'MiniPickPrompt', 'MiniPickPromptCaret', 'MiniPickPromptPrefix',
-    'MiniStarterCurrent', 'MiniStarterFooter', 'MiniStarterHeader', 'MiniStarterInactive',
-    'MiniStarterItem', 'MiniStarterItemBullet', 'MiniStarterItemPrefix', 'MiniStarterSection', 'MiniStarterQuery',
-    'MiniFilesBorder', 'MiniFilesBorderModified', 'MiniFilesCursorLine', 'MiniFilesDirectory',
-    'MiniFilesFile', 'MiniFilesNormal', 'MiniFilesTitle', 'MiniFilesTitleFocused',
+    'MiniStatuslineModeNormal',
+    'MiniStatuslineModeInsert',
+    'MiniStatuslineModeVisual',
+    'MiniStatuslineModeReplace',
+    'MiniStatuslineModeCommand',
+    'MiniStatuslineModeOther',
+    'MiniStatuslineDevinfo',
+    'MiniStatuslineFilename',
+    'MiniStatuslineFileinfo',
+    'MiniStatuslineInactive',
+    'MiniPickNormal',
+    'MiniPickBorder',
+    'MiniPickBorderBusy',
+    'MiniPickBorderText',
+    'MiniPickCursor',
+    'MiniPickIconDirectory',
+    'MiniPickIconFile',
+    'MiniPickHeader',
+    'MiniPickMatchCurrent',
+    'MiniPickMatchMarked',
+    'MiniPickMatchRanges',
+    'MiniPickPreviewLine',
+    'MiniPickPreviewRegion',
+    'MiniPickPrompt',
+    'MiniPickPromptCaret',
+    'MiniPickPromptPrefix',
+    'MiniStarterCurrent',
+    'MiniStarterFooter',
+    'MiniStarterHeader',
+    'MiniStarterInactive',
+    'MiniStarterItem',
+    'MiniStarterItemBullet',
+    'MiniStarterItemPrefix',
+    'MiniStarterSection',
+    'MiniStarterQuery',
+    'MiniFilesBorder',
+    'MiniFilesBorderModified',
+    'MiniFilesCursorLine',
+    'MiniFilesDirectory',
+    'MiniFilesFile',
+    'MiniFilesNormal',
+    'MiniFilesTitle',
+    'MiniFilesTitleFocused',
 }
 for _, group in ipairs(mini_groups) do
     assert(mini_hl[group] ~= nil, group .. ' should be defined')
@@ -520,19 +594,39 @@ print('--> Testing Oil.nvim highlights...')
 stealth.setup()
 local oil_hl = stealth.highlights()
 local oil_groups = {
-    'OilEmpty', 'OilHidden', 'OilDir', 'OilDirHidden', 'OilDirIcon', 'OilSocket',
-    'OilSocketHidden', 'OilLink', 'OilOrphanLink', 'OilLinkHidden', 'OilOrphanLinkHidden',
-    'OilLinkTarget', 'OilOrphanLinkTarget', 'OilLinkTargetHidden', 'OilOrphanLinkTargetHidden',
-    'OilFile', 'OilFileHidden', 'OilCreate', 'OilDelete', 'OilMove', 'OilCopy', 'OilChange',
-    'OilRestore', 'OilPurge', 'OilTrash', 'OilTrashSourcePath',
+    'OilEmpty',
+    'OilHidden',
+    'OilDir',
+    'OilDirHidden',
+    'OilDirIcon',
+    'OilSocket',
+    'OilSocketHidden',
+    'OilLink',
+    'OilOrphanLink',
+    'OilLinkHidden',
+    'OilOrphanLinkHidden',
+    'OilLinkTarget',
+    'OilOrphanLinkTarget',
+    'OilLinkTargetHidden',
+    'OilOrphanLinkTargetHidden',
+    'OilFile',
+    'OilFileHidden',
+    'OilCreate',
+    'OilDelete',
+    'OilMove',
+    'OilCopy',
+    'OilChange',
+    'OilRestore',
+    'OilPurge',
+    'OilTrash',
+    'OilTrashSourcePath',
 }
 for _, group in ipairs(oil_groups) do
     assert(oil_hl[group] ~= nil, group .. ' should be defined')
 end
 stealth.load()
 assert(
-    vim.api.nvim_get_hl(0, { name = 'OilDir', link = false }).fg
-        == vim.api.nvim_get_hl(0, { name = 'Directory' }).fg,
+    vim.api.nvim_get_hl(0, { name = 'OilDir', link = false }).fg == vim.api.nvim_get_hl(0, { name = 'Directory' }).fg,
     'Oil directories should follow the theme directory color'
 )
 stealth.setup({ plugins = { oil = false } })
@@ -552,9 +646,15 @@ end
 print('--> Testing Markdown and HTML syntax font styles...')
 local function assert_plain_markup()
     for _, group in ipairs({
-        'htmlBold', 'htmlItalic', 'htmlBoldItalic',
-        'htmlBoldUnderline', 'htmlBoldUnderlineItalic', 'htmlUnderlineItalic',
-        'markdownBold', 'markdownItalic', 'markdownBoldItalic',
+        'htmlBold',
+        'htmlItalic',
+        'htmlBoldItalic',
+        'htmlBoldUnderline',
+        'htmlBoldUnderlineItalic',
+        'htmlUnderlineItalic',
+        'markdownBold',
+        'markdownItalic',
+        'markdownBoldItalic',
     }) do
         local resolved = vim.api.nvim_get_hl(0, { name = group, link = false })
         local cterm = resolved.cterm or {}
@@ -617,6 +717,7 @@ local integrations = {
     gitsigns = 'GitSignsAdd',
     indent_blankline = 'IBLIndent',
     lsp = 'DiagnosticError',
+    mini = 'MiniFilesNormal',
     neotree = 'NeoTreeNormal',
     nvimtree = 'NvimTreeNormal',
     oil = 'OilDir',
@@ -626,12 +727,61 @@ local integrations = {
     trouble = 'TroubleNormal',
     whichkey = 'WhichKey',
 }
+stealth.setup()
+local all_integration_highlights = stealth.highlights()
+local integration_colors = stealth.colors()
+local integration_context = {
+    styles = require('stealth.config').options.styles,
+    inverse_fg = integration_colors.bg,
+    float_bg = integration_colors.bg_float,
+    sidebar_bg = integration_colors.bg_sidebar,
+    prompt_bg = integration_colors.bg_highlight,
+}
+for name in pairs(require('stealth.config').defaults.plugins) do
+    assert(integrations[name] ~= nil, name .. ' should have an integration test')
+end
 for integration, group in pairs(integrations) do
+    local module = require('stealth.integrations.' .. integration)
+    assert(type(module.get) == 'function', integration .. ' should provide a separate highlight module')
+    local owned = module.get(integration_colors, integration_context)
+    assert(next(owned) ~= nil, integration .. ' should define highlight groups')
     stealth.setup({ plugins = { [integration] = false } })
     local hl = stealth.highlights()
     assert(hl[group] == nil, integration .. ' should omit ' .. group)
     assert(hl.Normal ~= nil, integration .. ' should not omit core highlights')
+    for name, definition in pairs(all_integration_highlights) do
+        if owned[name] ~= nil then
+            assert(hl[name] == nil, integration .. ' should omit its ' .. name .. ' highlight')
+        else
+            assert(vim.deep_equal(hl[name], definition), integration .. ' should not change ' .. name)
+        end
+    end
+    for remaining, definition in pairs(hl) do
+        assert(
+            vim.deep_equal(definition, all_integration_highlights[remaining]),
+            integration .. ' should not change the remaining ' .. remaining .. ' highlight'
+        )
+    end
 end
+
+stealth.setup({
+    on_colors = function(colors)
+        colors.accent = '#123456'
+        colors.git_add = '#234567'
+        colors.diag_warn = '#345678'
+    end,
+    on_highlights = function(highlights, colors)
+        assert(highlights.TelescopePromptTitle.bg == colors.accent, 'Integrations should use the customized palette')
+        highlights.TelescopeNormal = { fg = '#456789' }
+    end,
+})
+local customized_integrations = stealth.highlights()
+assert(customized_integrations.TelescopeNormal.fg == '#456789', 'User hooks should override integration highlights')
+assert(customized_integrations.BlinkCmpLabelMatch.fg == '#123456', 'Blink should use the customized palette')
+assert(customized_integrations.GitSignsAdd.fg == '#234567', 'Gitsigns should use the customized palette')
+assert(customized_integrations.DiagnosticWarn.fg == '#345678', 'LSP should use the customized palette')
+assert(customized_integrations['@comment.warning'].bg == '#345678', 'Treesitter should use the customized palette')
+
 stealth.setup({
     plugins = { telescope = false, treesitter = false },
     on_highlights = function(hl)
