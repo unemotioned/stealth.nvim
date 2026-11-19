@@ -70,7 +70,7 @@ function M.setup(colors, config)
         Substitute = { fg = inverse_fg, bg = colors.red },
         LineNr = { fg = colors.fg_gutter },
         CursorLineNr = { fg = colors.fg },
-        MatchParen = { fg = colors.orange, bg = colors.bg_visual },
+        MatchParen = { fg = colors.orange },
         ModeMsg = { fg = colors.fg },
         MsgArea = { fg = colors.fg },
         MoreMsg = { fg = colors.cyan },
